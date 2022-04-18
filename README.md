@@ -2,15 +2,14 @@
 Test enrichment of network clusters given node annotation data
 
 
-## Compile
+## Compile & GSL environment variables setup
 
 
 1) Install GSL:
 1.1) Using mac can run: > brew install gsl
 
 2) Set environment variables (replacing your GSL path in GSL_HOME):
-2.1) in .bashrc:
-      GSL environment variables setup
+2.1) in .bashrc:    
       
       export GSL_HOME="/opt/homebrew/Cellar/gsl/2.7.1"
       
