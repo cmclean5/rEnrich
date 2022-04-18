@@ -1,0 +1,8 @@
+useDynLib(rEnrich)
+importFrom(Rcpp, evalCpp)
+export(test,
+       reset,
+       erase,
+       load,
+       run,
+       getResults)
