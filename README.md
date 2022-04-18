@@ -36,6 +36,9 @@ Test enrichment of network clusters given node annotation data
 4.2) > R CMD INSTALL rEnrich_1.0.tar.gz
 
 5) Run example:
+
 5.1) > cd rEnrich/example/
+
 5.2) > R
+
 5.3) > source('example.R')
