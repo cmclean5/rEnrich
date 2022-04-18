@@ -4,6 +4,7 @@ Test enrichment of network clusters given node annotation data
 
 ## Compile
 
+
 1) Install GSL:
 1.1) Using mac can run: > brew install gsl
 
