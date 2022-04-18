@@ -6,9 +6,11 @@ Test enrichment of network clusters given node annotation data
 
 
 1) Install GSL:
+
 1.1) Using mac can run: > brew install gsl
 
 2) Set environment variables (replacing your GSL path in GSL_HOME):
+
 2.1) in .bashrc:    
       
       export GSL_HOME="/opt/homebrew/Cellar/gsl/2.7.1"
@@ -24,10 +26,13 @@ Test enrichment of network clusters given node annotation data
       export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GSL_HOME}/lib"
 
 3) Run autoconfig.ac:
+
 3.1) > autoconf
 
 4) Build and install:
+
 4.1) > R CMD build rEnrich
+
 4.2) > R CMD INSTALL rEnrich_1.0.tar.gz
 
 5) Run example:
