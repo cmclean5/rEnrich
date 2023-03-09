@@ -1,6 +1,6 @@
 Package: rEnrich
 Title: Network Clustering Enrichment 
-Version: 1.0.1
+Version: 1.0.2
 Date: 2023-03-01
 Authors@R: c(
     person("Colin", "Mclean", 
@@ -9,7 +9,7 @@ Authors@R: c(
     person("Anatoly", "Sorokin", 
         email="lptolik@gmail.com", role=c("aut", "cre"),
         comment ="R functions, cranification, documentation, testing, maintenance"))
-Description: Test enrichment of network clusters given node annotation data 
+Description: Test enrichment of network clusters given node annotation data. 
 Depends: R (>= 4.2.2) 
 Imports: Rcpp (>= 1.0.8)
 LinkingTo: Rcpp, RcppGSL
