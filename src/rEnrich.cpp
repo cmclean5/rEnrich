@@ -18,7 +18,9 @@
 NetworkEnrichment *enrD=0;
 
 // [[Rcpp::export]]
-void test(){ cout << "  Hello! " << endl; }
+void test(){
+    //cout << "  Hello! " << endl;
+    }
 
 // [[Rcpp::export]]
 void reset(){ enrD=0; }
@@ -36,35 +38,35 @@ void load(Rcpp::DataFrame x,
 
   //Create Network Enrichment object and pass our input files to it.
   reset();
-    
+
   int x_cols    = x.length();
   int x_rows    = x.nrows();
 
   int anno_cols = anno.length();
   int anno_rows = anno.nrows();
-  
+
   if( (x_cols == 2 && x_rows > 0) &&
       (anno_cols == 3 && anno_rows > 0) ){
 
 
-     cout << "> loading dataframe..." << endl;
+     //cout << "> loading dataframe..." << endl;
     //cout << "> x_cols: " << x_cols << " anno_cols: " << anno_cols << endl;
-    
+
     // set size and fill the community membership dataset
     x_size = x_rows * x_cols;
     string *MEMBERSHIP = new string[x_size];
-    
+
     // fill membership dataset
     V1 = x[0];
     V2 = x[1];
-      
+
     for(k=0; k<x_size; k++){
       i = floor(k/x_cols);
       j = k % x_cols;
 
       Rcpp::String v1(V1[i]);
       Rcpp::String v2(V2[i]);
-	
+
       if( j == 0 ){ MEMBERSHIP[(i*x_cols)+j] = v1.get_cstring(); }
       if( j == 1 ){ MEMBERSHIP[(i*x_cols)+j] = v2.get_cstring(); }
 
@@ -77,7 +79,7 @@ void load(Rcpp::DataFrame x,
     V1 = anno[0];
     V2 = anno[1];
     V3 = anno[2];
-      
+
     for(k=0; k<anno_size; k++){
       i = floor(k/anno_cols);
       j = k % anno_cols;
@@ -85,20 +87,20 @@ void load(Rcpp::DataFrame x,
       Rcpp::String v1(V1[i]);
       Rcpp::String v2(V2[i]);
       Rcpp::String v3(V3[i]);
-	
+
       if( j == 0 ){ ANNO[(i*anno_cols)+j] = v1.get_cstring(); }
       if( j == 1 ){ ANNO[(i*anno_cols)+j] = v2.get_cstring(); }
       if( j == 2 ){ ANNO[(i*anno_cols)+j] = v3.get_cstring(); }
-	
-    }    
+
+    }
 
     enrD = new NetworkEnrichment(MEMBERSHIP, x_rows, x_cols,
                                  ANNO, anno_rows, anno_cols);
-    
+
   }
-  
-  cout << "> done!" << endl;
-  
+
+  //cout << "> done!" << endl;
+
 }
 
 // [[Rcpp::export]]
@@ -120,20 +122,20 @@ void run( Rcpp::IntegerVector useChi2=0,
   Rcpp::String OUTDIR, Ext;
 
   bool useFDR=false;
-  
+
   OUTDIR="";
   Ext="";
 
   if( enrD != 0 ){
 
-    cout << "> running enrichment..." << endl;
+  //cout << "> running enrichment..." << endl;
 
   //
-  //if( useRelDist ){ enrD->setRelDist( true ); } 
+  //if( useRelDist ){ enrD->setRelDist( true ); }
 
   //
-  if( useChi2[0] ){ enrD->setChi2( true ); }  
-  
+  if( useChi2[0] ){ enrD->setChi2( true ); }
+
   //calculate depletion
   if( useOneSided[0] ){ enrD->oneSided(); }
 
@@ -151,15 +153,15 @@ void run( Rcpp::IntegerVector useChi2=0,
 
   // set pseudo count
   if( pesudoCount[0] != -1 ){ enrD->setPesudoCount( pesudoCount[0] ); }
-  
-  // Set which FDR method to use: BY (default), BH, BL. 
+
+  // Set which FDR method to use: BY (default), BH, BL.
   for( i=0; i<FDRset.size(); i++ ){
     if( FDRset[i] == FDRmeth ){
       enrD->setFDRmethod( FDRmeth.get_cstring() );
       useFDR = true;
-    }     
+    }
   }
-    
+
   cal1 = enrD->calculateOverlapinCommunities(runPerm[0],
                                              OUTDIR.get_cstring(),
                                              Ext.get_cstring(),
@@ -168,8 +170,8 @@ void run( Rcpp::IntegerVector useChi2=0,
                                              singlePerm[0]);
   }
 
-  cout << "> done." << endl;
-  
+  //cout << "> done." << endl;
+
 }
 
 // [[Rcpp::export]]
@@ -184,15 +186,15 @@ Rcpp::CharacterMatrix getResults(Rcpp::IntegerVector printTwoSided=1,
    usePrintalt[1]   == print also alternative side, i.e. depletion
    usePrintCnew[0]  == print old community ids
    usePrintID[1]    == print annotation ID, else annotation description
-   usePrintAn[1]    == print annotation type size.   
+   usePrintAn[1]    == print annotation type size.
   */
-  
+
   int N,M,F;
   int i,m,f,k,K;
   int SIGMASIZE,index;
-  int Coffset,Foffset,Fsize; 
+  int Coffset,Foffset,Fsize;
 
-  bool printTS=false; 
+  bool printTS=false;
   bool printAlt=false;
   bool printCnew=false;
   bool printID=false;
@@ -205,27 +207,27 @@ Rcpp::CharacterMatrix getResults(Rcpp::IntegerVector printTwoSided=1,
   if( usePrintAn[0]==1 )      { printAn=true; }
 
   Rcpp::CharacterMatrix RES;
-  
+
   if( enrD != 0 ){
 
-    cout << "> get results..." << endl;
-    
+    //cout << "> get results..." << endl;
+
     int BUFFERSIZE = enrD->getBufferSize();
     char buffer    [BUFFERSIZE];
     char bufferOR  [BUFFERSIZE];
-    
+
     //
     if( printAlt ){ enrD->setALT( false ); }
-  
+
     //Whether to print annotation IDs, or description
-    if( printCnew ){ enrD->setPrintCNEW( true ); }    
-  
+    if( printCnew ){ enrD->setPrintCNEW( true ); }
+
     //Whether to print annotation IDs, or description
-    if( printID ){ enrD->setPrintID( true ); }    
+    if( printID ){ enrD->setPrintID( true ); }
 
     //Whether to print annotation Size
-    if( printAn ){ enrD->setPrintAn( true ); }  
-    
+    if( printAn ){ enrD->setPrintAn( true ); }
+
     N         = enrD->getN();
     M         = enrD->getM();
     F         = enrD->getF();
@@ -236,13 +238,13 @@ Rcpp::CharacterMatrix getResults(Rcpp::IntegerVector printTwoSided=1,
     for( i=0; i<SIGMASIZE; i++){
       bonferroni[i] = enrD->calBonferroni(i, (double)(M*F));
     }
-   
+
     Coffset=2;
     if( printAlt ){ Foffset = 12; } else { Foffset = 9; }
     Fsize  = ((F*Foffset)+Coffset);
 
     RES    = Rcpp::CharacterMatrix(M,Fsize);
-   
+
     // Set colnames of RES
     Rcpp::CharacterVector cn (Fsize);
     cn[0] = "C"; cn[1] = "Cn";
@@ -269,19 +271,19 @@ Rcpp::CharacterMatrix getResults(Rcpp::IntegerVector printTwoSided=1,
         cn[k++] = "p-value";
         cn[k++] = "p.adjusted";
         cn[k++] = "{p_value}";
-        cn[k++] = "BC";        
+        cn[k++] = "BC";
       }
     }
-    
+
     colnames(RES) = cn;
-    
+
     //--- loop over all communities
     for(m=0; m<M; m++){
 
       if( printCnew ){ RES(m,0) = (enrD->getCom0(m)-enrD->getKOFFSET()); }
       else           { RES(m,0) = enrD->getCom0(m); }
 
-      RES(m,1) = enrD->getCom1(m);     
+      RES(m,1) = enrD->getCom1(m);
 
       //--- loop over each annotation type
       for(f=0, k=2; f<F; f++ ){
@@ -289,46 +291,46 @@ Rcpp::CharacterMatrix getResults(Rcpp::IntegerVector printTwoSided=1,
         int ele = (m*F)+f;
 
         string starsEO = "";
-        string starsET = "";	
+        string starsET = "";
         string starsDO = "";
         string starsDT = "";
-        
+
         for(i=0; i<SIGMASIZE; i++){
           if( enrD->getPvalue(ele)   <= bonferroni[i] ){ starsEO += "*";  }
           if( enrD->getPvalueT(ele)  <= bonferroni[i] ){ starsET += "*";  }
           if( enrD->getPvalueD(ele)  <= bonferroni[i] ){ starsDO += "*";  }
           if( enrD->getPvalueDT(ele) <= bonferroni[i] ){ starsDT += "*";  }
-        }      
-        
+        }
+
         //--- Hypergeometric mean
         double mn = 0.0;
         mn  = double(enrD->getCom1(m)) * double(enrD->getAnnoK( index, f));
         mn /= double(N);
-        
+
         //--- Odds Ratio
         double ors = 0;
         double orL = 0;
         double orU = 0;
-      
+
         double a   = double(enrD->getOverlap(ele));
         double b   = double(enrD->getCom1(m) - enrD->getOverlap(ele));
         double c   = double(enrD->getAnnoK(index,f) - enrD->getOverlap(ele));
         double d   = double(N - enrD->getAnnoK(index,f) + enrD->getOverlap(ele) - enrD->getCom1(m));
 
         enrD->calculateOddsRatio( a, b, c, d, ors, orL, orU );
-		  
-        sprintf(bufferOR,"[%.2f,%.2f]",orL, orU);	
+
+        sprintf(bufferOR,"[%.2f,%.2f]",orL, orU);
         //---
-	
+
         //--- print Anno size
         sprintf(buffer,"%d",enrD->getAnnoK(index,f));
 
         (printAn ? RES(m,k++) = string(buffer) : RES(m,k++) = "");
-             
+
         double PermFrac = enrD->getPseudoCount()+enrD->getPermute(ele);
         PermFrac /= enrD->getNoP();
         PermFrac *= 100;
-    
+
         if( printAlt ){
           RES(m,k++) = enrD->getOverlap(ele);
           RES(m,k++) = mn;
@@ -375,14 +377,14 @@ Rcpp::CharacterMatrix getResults(Rcpp::IntegerVector printTwoSided=1,
           RES(m,k++) = PermFrac;
           (printTS ? RES(m,k++) = starsET : RES(m,k++) = starsEO);
         }
-        
-        }    
-    }      
 
-    cout << "> done." << endl;
-    
+        }
+    }
+
+    //cout << "> done." << endl;
+
   } else { RES = Rcpp::CharacterMatrix(0,0); }
 
   return RES;
-  
+
 }
