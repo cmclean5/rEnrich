@@ -1,11 +1,16 @@
 Package: rEnrich
 Title: Network Clustering Enrichment 
-Version: 1.0
-Date: 2022-04-13
-Author: Colin Mclean
-Maintainer: Colin Mclean <Colin.D.Mclean@ed.ac.uk>
+Version: 1.0.1
+Date: 2023-03-01
+Authors@R: c(
+    person("Colin", "Mclean", 
+        email="Colin.D.Mclean@ed.ac.uk", role="aut", 
+        comment ="algorithm implementation in Rcpp functions"), 
+    person("Anatoly", "Sorokin", 
+        email="lptolik@gmail.com", role=c("aut", "cre"),
+        comment ="R functions, cranification, documentation, testing, maintenance"))
 Description: Test enrichment of network clusters given node annotation data 
-Depends: R (>= 4.2.0) 
+Depends: R (>= 4.2.2) 
 Imports: Rcpp (>= 1.0.8)
 LinkingTo: Rcpp, RcppGSL
 URL: 
