@@ -51,8 +51,9 @@ public:
   buildSets();
   ~buildSets();
 
-  void addSets(string*, int, int, string*, int, int ); 
-  
+  void addSets(string*, int, int, string*, int, int );
+  void addSets(string*, int, int, vector<string*>, vector<int>, vector<int> );
+
 private:
   
   //functions
@@ -60,13 +61,20 @@ private:
   LISTst *createList( string*, int, int );
   void    freqofComslist( bool = false, int = 0 );
   LISTst *freqofAnnolist( LISTst*, int, int & );
-  LISTst *removeDuplicateIDs( LISTst *, int &, LISTst *, int );
+  LISTst *removeDuplicateIDs( LISTst *, int &, LISTst *, int ); 
   
   //variables
   bool    freedClist; 
   bool    freedAlist;
   bool    freedANNOS;
-  
+
+  //set file delineator(s)
+  static const int DELSIZE = 1;
+  char dels[DELSIZE];
+
+  //set file header delineator(s)
+  static const int HEADDELSIZE = 1;
+  char HEADdel[HEADDELSIZE];
   
  protected:
   void addKOffset( int = 0 );

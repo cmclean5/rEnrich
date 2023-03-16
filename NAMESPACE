@@ -3,6 +3,7 @@ importFrom(Rcpp, evalCpp)
 export(test,
        reset,
        erase,
+       fill_dataset,
        load,
        run,
        getResults,

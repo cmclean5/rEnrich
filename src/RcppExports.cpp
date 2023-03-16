@@ -38,33 +38,45 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// fill_dataset
+Rcpp::StringVector fill_dataset(Rcpp::DataFrame r_set);
+RcppExport SEXP _rEnrich_fill_dataset(SEXP r_setSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type r_set(r_setSEXP);
+    rcpp_result_gen = Rcpp::wrap(fill_dataset(r_set));
+    return rcpp_result_gen;
+END_RCPP
+}
 // load
-void load(Rcpp::DataFrame x, Rcpp::DataFrame anno);
-RcppExport SEXP _rEnrich_load(SEXP xSEXP, SEXP annoSEXP) {
+void load(Rcpp::Nullable<Rcpp::DataFrame> x, Rcpp::Nullable<Rcpp::DataFrame> anno1, Rcpp::Nullable<Rcpp::DataFrame> anno2, Rcpp::Nullable<Rcpp::DataFrame> anno3);
+RcppExport SEXP _rEnrich_load(SEXP xSEXP, SEXP anno1SEXP, SEXP anno2SEXP, SEXP anno3SEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type x(xSEXP);
-    Rcpp::traits::input_parameter< Rcpp::DataFrame >::type anno(annoSEXP);
-    load(x, anno);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::DataFrame> >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::DataFrame> >::type anno1(anno1SEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::DataFrame> >::type anno2(anno2SEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::DataFrame> >::type anno3(anno3SEXP);
+    load(x, anno1, anno2, anno3);
     return R_NilValue;
 END_RCPP
 }
 // run
-void run(Rcpp::IntegerVector useChi2, Rcpp::IntegerVector useOneSided, Rcpp::IntegerVector useTwoSided, Rcpp::IntegerVector useMaxSS, Rcpp::IntegerVector runPerm, Rcpp::IntegerVector singlePerm, Rcpp::IntegerVector useSeed, Rcpp::IntegerVector setNOP, Rcpp::NumericVector pesudoCount, Rcpp::String FDRmeth);
-RcppExport SEXP _rEnrich_run(SEXP useChi2SEXP, SEXP useOneSidedSEXP, SEXP useTwoSidedSEXP, SEXP useMaxSSSEXP, SEXP runPermSEXP, SEXP singlePermSEXP, SEXP useSeedSEXP, SEXP setNOPSEXP, SEXP pesudoCountSEXP, SEXP FDRmethSEXP) {
+void run(Rcpp::IntegerVector useChi2, Rcpp::IntegerVector useOneSided, Rcpp::IntegerVector useTwoSided, Rcpp::IntegerVector runPerm, Rcpp::IntegerVector singlePerm, Rcpp::IntegerVector useSeed, Rcpp::IntegerVector setNOP, Rcpp::NumericVector pesudoCount, Rcpp::String FDRmeth);
+RcppExport SEXP _rEnrich_run(SEXP useChi2SEXP, SEXP useOneSidedSEXP, SEXP useTwoSidedSEXP, SEXP runPermSEXP, SEXP singlePermSEXP, SEXP useSeedSEXP, SEXP setNOPSEXP, SEXP pesudoCountSEXP, SEXP FDRmethSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type useChi2(useChi2SEXP);
     Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type useOneSided(useOneSidedSEXP);
     Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type useTwoSided(useTwoSidedSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type useMaxSS(useMaxSSSEXP);
     Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type runPerm(runPermSEXP);
     Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type singlePerm(singlePermSEXP);
     Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type useSeed(useSeedSEXP);
     Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type setNOP(setNOPSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericVector >::type pesudoCount(pesudoCountSEXP);
     Rcpp::traits::input_parameter< Rcpp::String >::type FDRmeth(FDRmethSEXP);
-    run(useChi2, useOneSided, useTwoSided, useMaxSS, runPerm, singlePerm, useSeed, setNOP, pesudoCount, FDRmeth);
+    run(useChi2, useOneSided, useTwoSided, runPerm, singlePerm, useSeed, setNOP, pesudoCount, FDRmeth);
     return R_NilValue;
 END_RCPP
 }
@@ -88,8 +100,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rEnrich_test", (DL_FUNC) &_rEnrich_test, 0},
     {"_rEnrich_reset", (DL_FUNC) &_rEnrich_reset, 0},
     {"_rEnrich_erase", (DL_FUNC) &_rEnrich_erase, 0},
-    {"_rEnrich_load", (DL_FUNC) &_rEnrich_load, 2},
-    {"_rEnrich_run", (DL_FUNC) &_rEnrich_run, 10},
+    {"_rEnrich_fill_dataset", (DL_FUNC) &_rEnrich_fill_dataset, 1},
+    {"_rEnrich_load", (DL_FUNC) &_rEnrich_load, 4},
+    {"_rEnrich_run", (DL_FUNC) &_rEnrich_run, 9},
     {"_rEnrich_getResults", (DL_FUNC) &_rEnrich_getResults, 5},
     {NULL, NULL, 0}
 };

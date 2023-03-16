@@ -8,6 +8,7 @@ class NetworkEnrichment : buildSets {
  public:
   NetworkEnrichment();
   NetworkEnrichment( string*, int, int, string*, int, int );
+  NetworkEnrichment( string*, int, int, vector<string*>, vector<int>, vector<int> );
   ~NetworkEnrichment();
 
   //--------------------------------------------------------

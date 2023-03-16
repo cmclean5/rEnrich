@@ -61,7 +61,7 @@ NetworkEnrichment::NetworkEnrichment() : buildSets() {
   this->printTwoSided = true;
   this->printALT      = true;
   this->calRelDist    = false;
-  this->useMaxSS      = false;
+  //this->useMaxSS      = false;
   this->useRCfisher   = false;
   this->useChi2       = false;
   this->printCnew     = false;
@@ -99,7 +99,7 @@ NetworkEnrichment::NetworkEnrichment() : buildSets() {
 
 }
 
-NetworkEnrichment::NetworkEnrichment( string *x, int x_rows, int x_cols, string *anno, int a_rows, int a_cols ) : buildSets(){
+NetworkEnrichment::NetworkEnrichment( string *m, int m_rows, int m_cols, string *anno, int a_rows, int a_cols ) : buildSets(){
 
  int i;
 
@@ -159,7 +159,7 @@ NetworkEnrichment::NetworkEnrichment( string *x, int x_rows, int x_cols, string 
   this->printTwoSided = true;
   this->printALT      = true;
   this->calRelDist    = false;
-  this->useMaxSS      = false;
+  //this->useMaxSS      = false;
   this->useRCfisher   = false;
   this->useChi2       = false;
   this->printCnew     = false;
@@ -187,8 +187,116 @@ NetworkEnrichment::NetworkEnrichment( string *x, int x_rows, int x_cols, string 
   for( i=0; i<OVERLAPSIZE; i++ ){ this->MINOVERLAP[i]=0; }
 
   //load membership and annotation data.frames
-  addSets(x, x_rows ,x_cols, anno, a_rows, a_cols);
+  addSets(m, m_rows ,m_cols, anno, a_rows, a_cols);
 
+  //Set default values for... but will reset/check this in each public calculation function
+  //N -> Number of genes, network size
+  //M -> Number of communities
+  //F -> Number of annotation types
+  N = Clines;
+  M = COMS.size();
+  F = Fsize[ANNOindex];
+
+  //---set gsl random number generator, using taus2 generator
+  g = gsl_rng_alloc(gsl_rng_taus2);
+  seed = 0;
+  seedOffset = 0;
+
+}
+
+
+NetworkEnrichment::NetworkEnrichment( string* m, int m_rows, int m_cols,
+                                      vector<string*> anno, vector<int> a_rows,
+                                      vector<int> a_cols   ) : buildSets(){
+
+  int i; 
+
+  this->freedMemory.push_back(false);
+
+  this->baseNAME.push_back("permute_p_values");
+  this->baseNAME.push_back("overlapCOMS");
+  this->baseNAME.push_back("overlapNTWK");
+  this->baseNAME.push_back("overlap");
+
+  this->comSIZE  = 0;
+  this->geneCOM  = 0;
+  this->annoSIZE = 0;
+
+  this->studies   = 0;
+  this->overlap   = 0;
+  this->muab      = 0;
+  this->muCab     = 0;
+  this->nab       = 0;
+
+  this->p_values  = 0;
+  this->padjusted = 0;
+  this->permute   = 0;
+
+  this->p_valuesT = 0;
+  this->padjustedT= 0;
+  this->permuteT  = 0;
+
+  this->p_valuesD = 0;
+  this->padjustedD= 0;
+  this->permuteD  = 0;
+
+  this->p_valuesDT = 0;
+  this->padjustedDT= 0;
+  this->permuteDT  = 0;
+
+  this->p_dist     = 0;
+  this->padjustedRD= 0;
+  this->reldist    = 0;
+
+  this->p_exfisher    = 0;
+  this->padjustedEXF  = 0;
+  this->p_chi2        = 0;
+  this->padjustedCHI2 = 0;
+
+  this->ANNOindex = 0;
+  this->NoP       = 1000;
+  this->FDRtest   = 1;
+  this->KOFFSET   = 0;
+  this->isOFFSET  = false;
+  this->printID   = false;
+  this->printAn   = false;
+
+  this->printMeanMu   = true;
+  this->printFC       = false;
+  this->printOneSided = false;
+  this->printTwoSided = true;
+  this->printALT      = true;
+  this->calRelDist    = false;
+  //this->useMaxSS      = false;
+  this->useRCfisher   = false;
+  this->useChi2       = false;
+  this->printCnew     = false;
+
+  this->sigma[0] = 0.05;
+  this->sigma[1] = 0.01;
+  this->sigma[2] = 0.001;
+
+  this->FDR       = 0.0;
+  this->PV        = 0.0;
+  this->SIGMA     = sigma[0];
+  this->LEVEL     = 0;
+  this->TESTS     = 0;
+
+  this->pesudocount = 1.0; //to avoid p-values of zero, in the permutation test
+
+  this->FDRmethods.push_back("BY");
+  this->FDRmethods.push_back("BH");
+  this->FDRmethods.push_back("BL");
+
+  this->dels[0] = '\t';
+
+  for( i=0; i<SIGMASIZE; i++ )  { this->bonferroni[i]=0; }
+
+  for( i=0; i<OVERLAPSIZE; i++ ){ this->MINOVERLAP[i]=0; }
+
+  //load membership and annotation data.frames
+  addSets(m, m_rows, m_cols, anno, a_rows, a_cols);
+  
   //Set default values for... but will reset/check this in each public calculation function
   //N -> Number of genes, network size
   //M -> Number of communities
@@ -312,11 +420,13 @@ void NetworkEnrichment::setExpectedOverlap ( bool setMeanMu ){
 
 }
 
+/*
 void NetworkEnrichment::setFoldChange ( bool setFC ){
 
   this->printFC = setFC;
 
 }
+*/
 
 void NetworkEnrichment::setRelDist ( bool setRD ){
 
@@ -338,11 +448,13 @@ void NetworkEnrichment::twoSided (){
 
 }
 
+/*
 void NetworkEnrichment::maxSS (){
 
   this->useMaxSS = true;
 
 }
+*/
 
 void NetworkEnrichment::setRCfisher ( bool RCf ){
 

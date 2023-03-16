@@ -17,6 +17,21 @@ erase <- function() {
     invisible(.Call('_rEnrich_erase', PACKAGE = 'rEnrich'))
 }
 
+#' Internal function to load each dataset
+#'
+#' This function reads in a dataset Rcpp::DataFrame format and 
+#' returns a std::string structure in memory.  
+#'
+#' !Note! This internal function is not for regular users.
+#' Use \code{\link{run_enrichment}} for analysis.
+#'
+#' @param anno element annotation data with term id, term name and
+#' the element name in columns one, two and three respectively.
+#'
+fill_dataset <- function(r_set) {
+    .Call('_rEnrich_fill_dataset', PACKAGE = 'rEnrich', r_set)
+}
+
 #' Internal function to load data for calculation.
 #'
 #' This function reads group/cluster membership and element
@@ -32,8 +47,8 @@ erase <- function() {
 #' @param anno element annotation data with term id, term name and
 #' the element name in columns one, two and three respectively.
 #'
-load <- function(x, anno) {
-    invisible(.Call('_rEnrich_load', PACKAGE = 'rEnrich', x, anno))
+load <- function(x = NULL, anno1 = NULL, anno2 = NULL, anno3 = NULL) {
+    invisible(.Call('_rEnrich_load', PACKAGE = 'rEnrich', x, anno1, anno2, anno3))
 }
 
 #' Internal function to run enrichment analysis.
@@ -46,7 +61,6 @@ load <- function(x, anno) {
 #' @param useChi2 =0,
 #' @param useOneSided =0,
 #' @param useTwoSided =1,
-#' @param useMaxSS =0,
 #' @param runPerm =0,
 #' @param singlePerm =0,
 #' @param useSeed =0,
@@ -54,8 +68,8 @@ load <- function(x, anno) {
 #' @param pesudoCount =-1.0,
 #' @param FDRmeth ="BY"
 #'
-run <- function(useChi2 = 0L, useOneSided = 0L, useTwoSided = 1L, useMaxSS = 0L, runPerm = 0L, singlePerm = 0L, useSeed = 0L, setNOP = 0L, pesudoCount = -1.0, FDRmeth = "BY") {
-    invisible(.Call('_rEnrich_run', PACKAGE = 'rEnrich', useChi2, useOneSided, useTwoSided, useMaxSS, runPerm, singlePerm, useSeed, setNOP, pesudoCount, FDRmeth))
+run <- function(useChi2 = 0L, useOneSided = 0L, useTwoSided = 1L, runPerm = 0L, singlePerm = 0L, useSeed = 0L, setNOP = 0L, pesudoCount = -1.0, FDRmeth = "BY") {
+    invisible(.Call('_rEnrich_run', PACKAGE = 'rEnrich', useChi2, useOneSided, useTwoSided, runPerm, singlePerm, useSeed, setNOP, pesudoCount, FDRmeth))
 }
 
 #' Internal function to ggregate results into the final matrix.

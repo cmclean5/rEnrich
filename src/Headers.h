@@ -9,6 +9,9 @@
 #include <unistd.h>
 #include <iomanip>
 #include <string>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include <vector>  
 #include <queue>

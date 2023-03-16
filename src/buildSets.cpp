@@ -23,7 +23,7 @@ buildSets::buildSets() {
 buildSets::~buildSets() { freeSpace(); }
 
 
-void buildSets::addSets( string* x,    int x_rows, int x_cols,
+void buildSets::addSets( string* m,    int m_rows, int m_cols,
                          string* anno, int a_rows, int a_cols ){
 
   int i,Ff;
@@ -40,11 +40,12 @@ void buildSets::addSets( string* x,    int x_rows, int x_cols,
   this->freedClist = false;
   this->freedAlist = false;
   this->freedANNOS = false;
+ 
   
   //read-in membership data.frame
-  Clines = x_rows;
-  Ccols  = x_cols;  
-  Clist  = createList( x, x_rows, x_cols );
+  Clines = m_rows;
+  Ccols  = m_cols;  
+  Clist  = createList( m, m_rows, m_cols );
 
   //read-in annotation data.frame 
   this->Alines.push_back(a_rows);
@@ -71,6 +72,59 @@ void buildSets::addSets( string* x,    int x_rows, int x_cols,
     
   
 }
+
+void buildSets::addSets( string* m, int m_rows, int m_cols,
+                         vector<string*> anno, vector<int> a_rows, vector<int> a_cols ){
+
+  int i,Ff;
+  
+  this->M          = 0;
+  this->N          = 0;
+  this->F          = 0;
+  this->M_old      = 0;
+  this->Mmin_old   = 0;
+  this->Mmax_old   = 0;
+  this->Mmin       = 0;
+  this->Mmax       = 0;
+  
+  this->freedClist = false;
+  this->freedAlist = false;
+  this->freedANNOS = false;
+ 
+  //read-in membership data.frame
+  Clines = m_rows;
+  Ccols  = m_cols;  
+  Clist  = createList( m, m_rows, m_cols );
+  
+  //read-in annotation data.frames
+  for(i=0; i<anno.size(); i++){
+    if( a_rows[i] > 0 ){
+      this->Alines.push_back(a_rows[i]);
+      this->Alist.push_back(createList( anno[i], a_rows[i], a_cols[i] ));
+    }
+  }
+
+  //calculate unqiue number of annotations types & the sizes.  
+  freqofComslist();
+
+  for( i=0; i<Alines.size(); i++ ){
+    Ff = 0;
+    this->ANNOS.push_back( freqofAnnolist(Alist[i], Alines[i], Ff) );
+    this->Fsize.push_back( Ff );
+  }
+
+  //check for duplicate Entrez IDs in each annotation type, which may exist
+  //in the input annotation files.
+  for( i=0; i<Alines.size(); i++ ){
+    Alist[i] = removeDuplicateIDs( Alist[i], Alines[i], ANNOS[i], Fsize[i] );    
+  }
+
+  N = Clines;
+  M = COMS.size();
+  F = Fsize[0];
+      
+}
+
 
 
 LISTst* buildSets::createList( std::string *data, int NROWS, int NCOLS ){
@@ -136,7 +190,8 @@ LISTst* buildSets::createList( std::string *data, int NROWS, int NCOLS ){
   return LIST;
   
 }
-  
+
+
 void buildSets::freqofComslist( bool addOffset, int Koffset ){
 
   int i, j, counter, Knew;

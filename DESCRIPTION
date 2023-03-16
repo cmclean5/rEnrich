@@ -10,7 +10,7 @@ Authors@R: c(
         email="lptolik@gmail.com", role=c("aut", "cre"),
         comment ="R functions, cranification, documentation, testing, maintenance"))
 Description: Test enrichment of network clusters given node annotation data. 
-Depends: R (>= 4.2.2) 
+Depends: R (>= 4.0.0) 
 Imports: Rcpp (>= 1.0.8)
 Suggests: 
     igraph,

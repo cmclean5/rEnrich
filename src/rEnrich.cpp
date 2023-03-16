@@ -32,10 +32,86 @@ void reset(){ enrD=0; }
 // [[Rcpp::export]]
 void erase(){ if(enrD !=0){ delete enrD; } }
 
+//' Internal function to load each dataset
+//'
+//' This function flattens an inputted Rcpp::DataFrame object and 
+//' returns a Rcpp::StringVector object. 
+//'
+//' !Note! This internal function is not for regular users.
+//' Use \code{\link{run_enrichment}} for analysis.
+//'
+//' @param r_set an Rcpp::DataFrame containing either two or three columns
+//'
+// [[Rcpp::export]]
+Rcpp::StringVector fill_dataset( Rcpp::DataFrame r_set ){
+
+  int i,j,k,r_cols,r_rows,r_size;
+
+  Rcpp::StringVector V1, V2, V3;
+ 
+  r_cols = r_set.length();
+  r_rows = r_set.nrows();
+
+  Rcpp::StringVector s_set;
+ 
+  if( r_cols == 2 && r_rows > 0){
+      // reads-in community membership file
+   
+      // set size and fill the community membership dataset
+      r_size = r_rows * r_cols;
+      s_set = Rcpp::StringVector(r_size);
+      
+      // fill membership dataset
+      V1 = r_set[0];
+      V2 = r_set[1];
+      
+      for(k=0; k<r_size; k++){
+        i = floor(k/r_cols);
+        j = k % r_cols;
+        
+        //Rcpp::String v1(V1[i]);
+        //Rcpp::String v2(V2[i]);
+
+        if( j == 0 ){ s_set[(i*r_cols)+j] = V1[i]; }//v1.get_cstring(); }
+        if( j == 1 ){ s_set[(i*r_cols)+j] = V2[i]; }//v2.get_cstring(); }
+
+      }
+
+    }
+
+    if( r_cols == 3 && r_rows > 0){
+        // reads-in annotation file
+        
+        // set size and fill the annotation dataset
+        r_size  = r_rows * r_cols;
+        s_set = Rcpp::StringVector(r_size);
+        
+        V1 = r_set[0];
+        V2 = r_set[1];
+        V3 = r_set[2];
+        
+        for(k=0; k<r_size; k++){
+          i = floor(k/r_cols);
+          j = k % r_cols;
+
+          if( j == 0 ){ s_set[(i*r_cols)+j] = V1[i]; }
+          if( j == 1 ){ s_set[(i*r_cols)+j] = V2[i]; }
+          if( j == 2 ){ s_set[(i*r_cols)+j] = V3[i]; }
+          
+        }
+    
+   
+  }
+
+  return s_set;
+
+}
+
+
 //' Internal function to load data for calculation.
 //'
 //' This function reads group/cluster membership and element
-//' annotation data for analysis. It does not return anything,
+//' annotation datasets for analysis. It does not return anything,
 //' it just create required structures in memory.
 //'
 //' !Note! This internal function is not for regular users.
@@ -44,83 +120,90 @@ void erase(){ if(enrD !=0){ delete enrD; } }
 //'
 //' @param x group/cluster membership data with element name in the
 //' first column and group id in the second
-//' @param anno element annotation data with term id, term name and
+//' @param anno1 first annotation dataset with term id, term name and
 //' the element name in columns one, two and three respectively.
+//' @param anno2 second annotation dataset.
+//' @param anno3 third  annotation dataset.
 //'
 // [[Rcpp::export]]
-void load(Rcpp::DataFrame x,
-          Rcpp::DataFrame anno ){
+void load( Rcpp::Nullable<Rcpp::DataFrame> x     = R_NilValue,
+           Rcpp::Nullable<Rcpp::DataFrame> anno1 = R_NilValue,
+           Rcpp::Nullable<Rcpp::DataFrame> anno2 = R_NilValue,
+           Rcpp::Nullable<Rcpp::DataFrame> anno3 = R_NilValue
+           ){  
 
-  int i,j,k, x_size, anno_size;
+  int i;
 
-  Rcpp::StringVector V1, V2, V3;
+  vector<string *> MEMBERSHIP;
+  int m_cols, m_rows;
+  
+  vector<string *> ANNOS;
+  vector<int>      ANNOS_COLS;
+  vector<int>      ANNOS_ROWS;
+  
+  Rcpp::StringVector tmp;
+  string *mem, *annos1, *annos2, *annos3; 
 
-  //Create Network Enrichment object and pass our input files to it.
-  reset();
+  
+  // reads in membership dataset
+  if( !x.isNull() ){
+    Rcpp::DataFrame X(x);
+    m_cols = X.length();
+    m_rows = X.nrows();
+    tmp    = fill_dataset(X);
+    mem    = new string[tmp.size()];
+    for(i=0; i<tmp.size(); i++){ mem[i] = tmp(i); }
+    MEMBERSHIP.push_back(mem);
+  }
 
-  int x_cols    = x.length();
-  int x_rows    = x.nrows();
+  // reads in 1st annotation dataset
+  if( !anno1.isNull() ){
+    Rcpp::DataFrame ANNO1(anno1);
+    ANNOS_COLS.push_back(ANNO1.length());
+    ANNOS_ROWS.push_back(ANNO1.nrows());
+    tmp    = fill_dataset(ANNO1);
+    annos1 = new string[tmp.size()];
+    for(i=0; i<tmp.size(); i++){ annos1[i] = tmp(i); }
+    ANNOS.push_back(annos1);
+  }
 
-  int anno_cols = anno.length();
-  int anno_rows = anno.nrows();
 
-  if( (x_cols == 2 && x_rows > 0) &&
-      (anno_cols == 3 && anno_rows > 0) ){
+  // reads in 2nd annotation dataset
+  if( !anno2.isNull() ){
+     Rcpp::DataFrame ANNO2(anno2);
+     ANNOS_COLS.push_back(ANNO2.length());
+     ANNOS_ROWS.push_back(ANNO2.nrows());
+     tmp    = fill_dataset(ANNO2);
+     annos2 = new string[tmp.size()];
+     for(i=0; i<tmp.size(); i++){ annos2[i] = tmp(i); }
+     ANNOS.push_back(annos2);
+  }
 
+  // reads in 3rd annotation dataset
+  if( !anno3.isNull() ){
+    Rcpp::DataFrame ANNO3(anno3);
+    ANNOS_COLS.push_back(ANNO3.length());
+    ANNOS_ROWS.push_back(ANNO3.nrows());
+    tmp    = fill_dataset(ANNO3);
+    annos3 = new string[tmp.size()];
+    for(i=0; i<tmp.size(); i++){ annos3[i] = tmp(i); }
+    ANNOS.push_back(annos3);
+  }
+  
+  if( MEMBERSHIP.size() == 1 && ANNOS.size() > 0 ){
 
-     //cout << "> loading dataframe..." << endl;
-    //cout << "> x_cols: " << x_cols << " anno_cols: " << anno_cols << endl;
-
-    // set size and fill the community membership dataset
-    x_size = x_rows * x_cols;
-    string *MEMBERSHIP = new string[x_size];
-
-    // fill membership dataset
-    V1 = x[0];
-    V2 = x[1];
-
-    for(k=0; k<x_size; k++){
-      i = floor(k/x_cols);
-      j = k % x_cols;
-
-      Rcpp::String v1(V1[i]);
-      Rcpp::String v2(V2[i]);
-
-      if( j == 0 ){ MEMBERSHIP[(i*x_cols)+j] = v1.get_cstring(); }
-      if( j == 1 ){ MEMBERSHIP[(i*x_cols)+j] = v2.get_cstring(); }
-
-    }
-
-    // set size and fill the annotation dataset
-    anno_size = anno_rows * anno_cols;
-    string *ANNO = new string[anno_size];
-
-    V1 = anno[0];
-    V2 = anno[1];
-    V3 = anno[2];
-
-    for(k=0; k<anno_size; k++){
-      i = floor(k/anno_cols);
-      j = k % anno_cols;
-
-      Rcpp::String v1(V1[i]);
-      Rcpp::String v2(V2[i]);
-      Rcpp::String v3(V3[i]);
-
-      if( j == 0 ){ ANNO[(i*anno_cols)+j] = v1.get_cstring(); }
-      if( j == 1 ){ ANNO[(i*anno_cols)+j] = v2.get_cstring(); }
-      if( j == 2 ){ ANNO[(i*anno_cols)+j] = v3.get_cstring(); }
-
-    }
-
-    enrD = new NetworkEnrichment(MEMBERSHIP, x_rows, x_cols,
-                                 ANNO, anno_rows, anno_cols);
+    //Create Network Enrichment object and pass our input files to it.
+    reset();       
+    
+    enrD = new NetworkEnrichment(MEMBERSHIP[0], m_rows, m_cols,
+                                 ANNOS, ANNOS_ROWS, ANNOS_COLS);
 
   }
 
   //cout << "> done!" << endl;
 
 }
+
 
 //' Internal function to run enrichment analysis.
 //'
@@ -132,7 +215,6 @@ void load(Rcpp::DataFrame x,
 //' @param useChi2 =0,
 //' @param useOneSided =0,
 //' @param useTwoSided =1,
-//' @param useMaxSS =0,
 //' @param runPerm =0,
 //' @param singlePerm =0,
 //' @param useSeed =0,
@@ -144,7 +226,6 @@ void load(Rcpp::DataFrame x,
 void run( Rcpp::IntegerVector useChi2=0,
           Rcpp::IntegerVector useOneSided=0,
           Rcpp::IntegerVector useTwoSided=1,
-          Rcpp::IntegerVector useMaxSS=0,
           Rcpp::IntegerVector runPerm=0,
           Rcpp::IntegerVector singlePerm=0,
           Rcpp::IntegerVector useSeed=0,
@@ -179,10 +260,7 @@ void run( Rcpp::IntegerVector useChi2=0,
   //calculate two-sided
   if( useTwoSided[0] ){ enrD->twoSided(); }
 
-   //calculate two-sided
-  if( useMaxSS[0] ){ enrD->maxSS(); }
-
-  // Set Random number seed
+   // Set Random number seed
   if( useSeed[0] != 0 ){ enrD->seedOffSet(true, useSeed[0]); }
 
   // Set number of permutations
