@@ -1902,7 +1902,7 @@ void NetworkEnrichment::overlapinComsHypergeometricTest(int indexA, int indexB){
   for(k=0, a=0; a<As; a++){
     for(b=0; b<Bs; b++, k++){
 
-      double tot = 0.0;
+      //double tot = 0.0;
       double A   = ANNOS[indexA][a].K;
       double B   = ANNOS[indexB][b].K;
 
@@ -1917,8 +1917,8 @@ void NetworkEnrichment::overlapinComsHypergeometricTest(int indexA, int indexB){
 	double chi2_p_value  = 1.0;
 
 	double mu        = 0.0;
-	double prob_A    = 0.0;
-	double prob_B    = 0.0;
+	//double prob_A    = 0.0;
+	//double prob_B    = 0.0;
 
 	int tally        = 0;
 	int tally_na     = 0;
@@ -2175,7 +2175,7 @@ void NetworkEnrichment::overlapinNetHypergeometricTest(int indexA, int indexB){
     double p_valueDT = 0.0;
     double p_valueT  = 0.0;
     double MIN       = 0.0;
-    double muMax     = 0.0;
+    //double muMax     = 0.0;
 
     //---if overlap <= MINOVERLAP, overlap too small
     if( (double)overlap[(a*B)+b]   > MINOVERLAP[0] &&
@@ -2290,7 +2290,7 @@ void NetworkEnrichment::overlapinNetHypergeometricTest(int indexA, int indexB, i
     double p_valueDT = 0.0;
     double p_valueT  = 0.0;
     double MIN       = 0.0;
-    double muMax     = 0.0;
+    //double muMax     = 0.0;
 
     //---if overlap <= MINOVERLAP, overlap too small
     if( (double)overlap[c+C*(b+B*a)] > MINOVERLAP[0] &&
@@ -2541,7 +2541,7 @@ int NetworkEnrichment::calculateOverlapinCommunities( int indexA, int indexB, co
   //A -> Number of annotation types A
   //B -> Number of annotation types B
 
-  int m,k,a,b,A,B,K;
+  int m,k,A,B,K;//a,b,
 
   //check we have at least two annotation sets and
   // indices A and B are valid
@@ -2776,7 +2776,8 @@ int NetworkEnrichment::calculateOverlapinNetwork( int indexA, int indexB, int in
   //B -> Number of annotation types B
   //C -> Number of annotation types C
 
-  int k,K,a,b,c,A,B,C;
+  int k,K; //,a,b,c,
+  int A,B,C;
 
 
   //check we have at least three annotation sets and
@@ -2886,7 +2887,7 @@ int NetworkEnrichment::calculateOverlapinCommunities( int Index, const char* out
 void NetworkEnrichment::printOverlapinCommunities( const char *outdir, const char *ext, bool printFDR, bool printPerm ){
 
 
-  int i,m,f,k,K;
+  int i,m,f; //,k,K;
 
   for(i=0; i<SIGMASIZE; i++){
     bonferroni[i] = sigma[i]/(double)(M*F);//Bonferroni at sigma[i]

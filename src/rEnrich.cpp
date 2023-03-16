@@ -240,7 +240,7 @@ Rcpp::CharacterMatrix getResults(Rcpp::IntegerVector printTwoSided=1,
   */
 
   int N,M,F;
-  int i,m,f,k,K;
+  int i,m,f,k; //,K;
   int SIGMASIZE,index;
   int Coffset,Foffset,Fsize;
 
