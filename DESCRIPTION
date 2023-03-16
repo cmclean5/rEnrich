@@ -1,6 +1,6 @@
 Package: rEnrich
 Title: Network Clustering Enrichment 
-Version: 1.0.3
+Version: 1.0.4
 Date: 2023-03-01
 Authors@R: c(
     person("Colin", "Mclean", 
@@ -12,10 +12,13 @@ Authors@R: c(
 Description: Test enrichment of network clusters given node annotation data. 
 Depends: R (>= 4.2.2) 
 Imports: Rcpp (>= 1.0.8)
-Suggests: igraph
+Suggests: 
+    igraph,
+    testthat (>= 3.0.0)
 LinkingTo: Rcpp, RcppGSL
 URL: 
 License: GPL (>= 2)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Encoding: UTF-8
+Config/testthat/edition: 3
