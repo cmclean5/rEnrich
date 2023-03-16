@@ -13,9 +13,9 @@
 #' * Pv p.value
 #' * Ap adjusted p.value
 #' * PvALT p-value for the alternative side, i.e. depletion
-#' if \code{\link{usePrintAlt}} is set to \code{TRUE}.
+#' if \code{usePrintAlt} is set to \code{TRUE}.
 #' * ApALT adjusted p.value for the alternative side, i.e. depletion
-#' if \code{\link{usePrintAlt}} is set to \code{TRUE}.
+#' if \code{usePrintAlt} is set to \code{TRUE}.
 #' * Fe
 #' * E(Mu) expected number of term found in cluster/group by chance
 #' * F total number of term instances in the universe
@@ -103,9 +103,9 @@ run_enrichment<-function(membership,annotation,gname,printTwoSided=TRUE,
 #' * Pv p.value
 #' * Ap adjusted p.value
 #' * PvALT p-value for the alternative side, i.e. depletion
-#' if \code{\link{usePrintAlt}} is set to \code{TRUE}.
+#' if \code{usePrintAlt} is set to \code{TRUE}.
 #' * ApALT adjusted p.value for the alternative side, i.e. depletion
-#' if \code{\link{usePrintAlt}} is set to \code{TRUE}.
+#' if \code{usePrintAlt} is set to \code{TRUE}.
 #' * Fe
 #' * E(Mu) expected number of term found in cluster/group by chance
 #' * F total number of term instances in the universe

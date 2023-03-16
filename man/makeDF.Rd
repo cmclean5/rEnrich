@@ -36,9 +36,9 @@ Creates data.frame with the following columns:
 \item Pv p.value
 \item Ap adjusted p.value
 \item PvALT p-value for the alternative side, i.e. depletion
-if \code{\link{usePrintAlt}} is set to \code{TRUE}.
+if \code{usePrintAlt} is set to \code{TRUE}.
 \item ApALT adjusted p.value for the alternative side, i.e. depletion
-if \code{\link{usePrintAlt}} is set to \code{TRUE}.
+if \code{usePrintAlt} is set to \code{TRUE}.
 \item Fe
 \item E(Mu) expected number of term found in cluster/group by chance
 \item F total number of term instances in the universe

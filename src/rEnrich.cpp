@@ -32,17 +32,20 @@ void reset(){ enrD=0; }
 // [[Rcpp::export]]
 void erase(){ if(enrD !=0){ delete enrD; } }
 
-//' Load data for calculation.
+//' Internal function to load data for calculation.
 //'
 //' This function reads group/cluster membership and element
 //' annotation data for analysis. It does not return anything,
 //' it just create required structures in memory.
 //'
+//' !Note! This internal function is not for regular users.
+//' Use \code{\link{run_enrichment}} for analysis.
+//'
+//'
 //' @param x group/cluster membership data with element name in the
 //' first column and group id in the second
 //' @param anno element annotation data with term id, term name and
 //' the element name in columns one, two and three respectively.
-//' @noRd
 //'
 // [[Rcpp::export]]
 void load(Rcpp::DataFrame x,
@@ -119,9 +122,12 @@ void load(Rcpp::DataFrame x,
 
 }
 
-//' Run enrichment analysis.
+//' Internal function to run enrichment analysis.
 //'
 //' This function perform actual calculations.
+//'
+//' !Note! This internal function is not for regular users.
+//' Use \code{\link{run_enrichment}} for analysis.
 //'
 //' @param useChi2 =0,
 //' @param useOneSided =0,
@@ -133,7 +139,6 @@ void load(Rcpp::DataFrame x,
 //' @param setNOP =0,
 //' @param pesudoCount =-1.0,
 //' @param FDRmeth ="BY"
-//' @noRd
 //'
 // [[Rcpp::export]]
 void run( Rcpp::IntegerVector useChi2=0,
@@ -206,7 +211,11 @@ void run( Rcpp::IntegerVector useChi2=0,
 
 }
 
-//' Aggregate results into the final matrix.
+//' Internal function to ggregate results into the final matrix.
+//'
+//' !Note! This internal function is not for regular users.
+//' Use \code{\link{run_enrichment}} for analysis.
+//'
 //'
 //' @param printTwoSided print two sided p-values
 //' @param usePrintAlt print also alternative side, i.e. depletion
@@ -214,7 +223,6 @@ void run( Rcpp::IntegerVector useChi2=0,
 //' @param usePrintID print annotation ID if \code{TRUE},
 //' else annotation description
 //' @param usePrintAn print annotation type size
-//' @noRd
 //'
 // [[Rcpp::export]]
 Rcpp::CharacterMatrix getResults(Rcpp::IntegerVector printTwoSided=1,
