@@ -175,9 +175,9 @@ makeDF<-function(tt,terms,gname,N,usePrintAlt){
         temp10 <- c(temp10, alt)
         fc = (as.numeric(ov)/as.numeric(cn)) / (as.numeric(cn)/as.numeric(N))
         temp11 <- c(temp11, fc)
-        if( max(fc) > FcMAX ){
-            FcMAX = max(fc)
-        }
+        # if( max(fc) > FcMAX ){
+        #     FcMAX = max(fc)
+        # }
         #rm(cc,cn,ov,ep,or,ci,pv,pa,palt,alt,fc)
     }
     DF[,2]  = temp1 # "C"
@@ -192,9 +192,9 @@ makeDF<-function(tt,terms,gname,N,usePrintAlt){
     DF[,14] = temp12 # "E(Mu)"
     DF[,17] = (as.numeric(DF[,5])/as.numeric(DF[,15])) /
         (as.numeric(DF[,3])/as.numeric(DF[,4]) ) # "Fc"
-    if( max(as.numeric(DF[,17])) > FeMAX ){
-        FeMAX = max(as.numeric(DF[,17]))
-    }
+    # if( max(as.numeric(DF[,17])) > FeMAX ){
+    #     FeMAX = max(as.numeric(DF[,17]))
+    # }
     if(usePrintAlt){
         DF[,11] = temp9 # "PvALT"
         DF[,12] = temp10 # "ApALT"
