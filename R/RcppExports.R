@@ -5,22 +5,64 @@ test <- function() {
     invisible(.Call('_rEnrich_test', PACKAGE = 'rEnrich'))
 }
 
+#' Reset calculation environment.
+#' @noRd
 reset <- function() {
     invisible(.Call('_rEnrich_reset', PACKAGE = 'rEnrich'))
 }
 
+#' Clean up the calculation environment remove all results.
+#' @noRd
 erase <- function() {
     invisible(.Call('_rEnrich_erase', PACKAGE = 'rEnrich'))
 }
 
+#' Load data for calculation.
+#'
+#' This function reads group/cluster membership and element
+#' annotation data for analysis. It does not return anything,
+#' it just create required structures in memory.
+#'
+#' @param x group/cluster membership data with element name in the
+#' first column and group id in the second
+#' @param anno element annotation data with term id, term name and
+#' the element name in columns one, two and three respectively.
+#' @noRd
+#'
 load <- function(x, anno) {
     invisible(.Call('_rEnrich_load', PACKAGE = 'rEnrich', x, anno))
 }
 
+#' Run enrichment analysis.
+#'
+#' This function perform actual calculations.
+#'
+#' @param useChi2 =0,
+#' @param useOneSided =0,
+#' @param useTwoSided =1,
+#' @param useMaxSS =0,
+#' @param runPerm =0,
+#' @param singlePerm =0,
+#' @param useSeed =0,
+#' @param setNOP =0,
+#' @param pesudoCount =-1.0,
+#' @param FDRmeth ="BY"
+#' @noRd
+#'
 run <- function(useChi2 = 0L, useOneSided = 0L, useTwoSided = 1L, useMaxSS = 0L, runPerm = 0L, singlePerm = 0L, useSeed = 0L, setNOP = 0L, pesudoCount = -1.0, FDRmeth = "BY") {
     invisible(.Call('_rEnrich_run', PACKAGE = 'rEnrich', useChi2, useOneSided, useTwoSided, useMaxSS, runPerm, singlePerm, useSeed, setNOP, pesudoCount, FDRmeth))
 }
 
+#' Aggregate results into the final matrix.
+#'
+#' @param printTwoSided print two sided p-values
+#' @param usePrintAlt print also alternative side, i.e. depletion
+#' @param usePrintCnew print old community ids
+#' @param usePrintID print annotation ID if \code{TRUE},
+#' else annotation description
+#' @param usePrintAn print annotation type size
+#' @noRd
+#'
 getResults <- function(printTwoSided = 1L, usePrintAlt = 0L, usePrintCnew = 0L, usePrintID = 0L, usePrintAn = 1L) {
     .Call('_rEnrich_getResults', PACKAGE = 'rEnrich', printTwoSided, usePrintAlt, usePrintCnew, usePrintID, usePrintAn)
 }

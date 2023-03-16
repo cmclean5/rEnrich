@@ -22,12 +22,28 @@ void test(){
     //cout << "  Hello! " << endl;
     }
 
+//' Reset calculation environment.
+//' @noRd
 // [[Rcpp::export]]
 void reset(){ enrD=0; }
 
+//' Clean up the calculation environment remove all results.
+//' @noRd
 // [[Rcpp::export]]
 void erase(){ if(enrD !=0){ delete enrD; } }
 
+//' Load data for calculation.
+//'
+//' This function reads group/cluster membership and element
+//' annotation data for analysis. It does not return anything,
+//' it just create required structures in memory.
+//'
+//' @param x group/cluster membership data with element name in the
+//' first column and group id in the second
+//' @param anno element annotation data with term id, term name and
+//' the element name in columns one, two and three respectively.
+//' @noRd
+//'
 // [[Rcpp::export]]
 void load(Rcpp::DataFrame x,
           Rcpp::DataFrame anno ){
@@ -103,6 +119,22 @@ void load(Rcpp::DataFrame x,
 
 }
 
+//' Run enrichment analysis.
+//'
+//' This function perform actual calculations.
+//'
+//' @param useChi2 =0,
+//' @param useOneSided =0,
+//' @param useTwoSided =1,
+//' @param useMaxSS =0,
+//' @param runPerm =0,
+//' @param singlePerm =0,
+//' @param useSeed =0,
+//' @param setNOP =0,
+//' @param pesudoCount =-1.0,
+//' @param FDRmeth ="BY"
+//' @noRd
+//'
 // [[Rcpp::export]]
 void run( Rcpp::IntegerVector useChi2=0,
           Rcpp::IntegerVector useOneSided=0,
@@ -174,6 +206,16 @@ void run( Rcpp::IntegerVector useChi2=0,
 
 }
 
+//' Aggregate results into the final matrix.
+//'
+//' @param printTwoSided print two sided p-values
+//' @param usePrintAlt print also alternative side, i.e. depletion
+//' @param usePrintCnew print old community ids
+//' @param usePrintID print annotation ID if \code{TRUE},
+//' else annotation description
+//' @param usePrintAn print annotation type size
+//' @noRd
+//'
 // [[Rcpp::export]]
 Rcpp::CharacterMatrix getResults(Rcpp::IntegerVector printTwoSided=1,
                                  Rcpp::IntegerVector usePrintAlt=0,
