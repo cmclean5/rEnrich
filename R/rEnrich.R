@@ -42,16 +42,16 @@
 #' @examples
 #' library(igraph)
 #' ## load graph
-#' file <- system.file("extdata", "PPI_Presynaptic.gml", package = "rEnrich")
-#' gg = read.graph(file,format="gml")
+#' gfile <- system.file("extdata", "PPI_Presynaptic.gml", package = "rEnrich")
+#' gg = read.graph(gfile,format="gml")
 #' ## build cluster membership data.frame
 #' ids  = igraph::get.vertex.attribute(gg,"name",V(gg))
 #' coms = igraph::get.vertex.attribute(gg,"louvain",V(gg))
 #' membership = as.data.frame(cbind(ids,coms))
 #' names(membership)<-c('names','membership')
 #' ## load annotation flat file
-#' file <- system.file("extdata", "flatfile_human_gene2HDO.csv", package = "rEnrich")
-#' anno = read.delim("flatfile_human_gene2HDO.csv",skip=1,sep="\t",header=F)
+#' afile <- system.file("extdata", "flatfile_human_gene2HDO.csv", package = "rEnrich")
+#' anno = read.delim(afile,skip=1,sep="\t",header=F)
 #' anno = as.data.frame(anno)
 #' names(anno)<-c('termID','termName','names')
 #' df <- run_enrichment(membership,anno,'louvain')
