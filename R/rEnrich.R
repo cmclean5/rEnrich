@@ -83,7 +83,8 @@ run_enrichment<-function(membership,annotation,gname,printTwoSided=TRUE,
     res = rEnrich::getResults(printTwoSided=as.integer(printTwoSided),
                               usePrintAlt=as.integer(usePrintAlt),
                               usePrintID=as.integer(usePrintID))
-    df<-makeDF(res,unique(anno[,1]),gname,usePrintAlt)
+    df<-makeDF(res,terms=unique(anno[,1]),gname=gname,
+               N=length(unique(membership$name)),usePrintAlt)
     return(df)
 
 }
@@ -114,12 +115,13 @@ run_enrichment<-function(membership,annotation,gname,printTwoSided=TRUE,
 #' @param tt result matrix from \code{\link{getResults}}
 #' @param terms list of unique annotation terms
 #' @param gname name of grouping
+#' @param N size of the universe
 #' @param usePrintAlt
 #'
 #' @return data.frame with the following columns:
 #'         "Fn","C","Cn","N","Mu","OR","CIl","CIu","Pv","Ap","PvALT","ApALT",
 #'         "Fe","E(Mu)","F","Alg","Fc"
-makeDF<-function(tt,terms,gname,usePrintAlt){
+makeDF<-function(tt,terms,gname,N,usePrintAlt){
     indx <- match(terms,colnames(tt))
     fn   <- colnames(tt)[indx]
     FN   <- length(fn)
@@ -202,8 +204,19 @@ makeDF<-function(tt,terms,gname,usePrintAlt){
     rm(cc,cn,ov,or,ci,pv,pa,palt,alt,fc,ep)
     rm(temp1, temp2, temp3, temp4, temp5, temp6, temp7, temp8, temp9, temp10, temp11, temp12)
     DF = as.data.frame(DF)
-    stridx<-match(c("Fn",'Alg'),names(df))
+    stridx<-match(c("Fn",'Alg'),names(DF))
     DF[,-stridx]<-lapply(DF[,-stridx], function(.x){as.numeric(.x)})
     DF[,stridx]<-lapply(DF[,stridx], function(.x){factor(.x)})
     return(DF)
+}
+
+#' Utility function to parse CI string
+#'
+#' @param x CI string
+#' @param indx which boundary to take
+#'
+#' @return CI boundary
+#' @noRd
+getCI <- function(x, indx=1){
+    strsplit(x,",")[[1]][indx]
 }
