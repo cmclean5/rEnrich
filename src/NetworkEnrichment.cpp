@@ -2903,9 +2903,9 @@ void NetworkEnrichment::printOverlapinCommunities( const char *outdir, const cha
 
     for(f=0; f<F; f++){
       if( printALT ){
-	(*fileout)  << (printID ? ANNOS[ANNOindex][f].annoID : ANNOS[ANNOindex][f].annoDES) << dels[0] << "actual overlap" << dels[0] << "expected overlap" << dels[0] << "OR" << dels[0] << "95% CI" << dels[0] << "p-value" << dels[0] << "p.adjusted" << dels[0] << "{p_value}" << dels[0] << "BC" << dels[0] << "p-value(ALT)" << dels[0] << "p.adjusted(ALT)" << dels[0] << "BC(ALT)" << dels[0];
+	(*fileout)  << (printID ? ANNOS[ANNOindex][f].annoID : ANNOS[ANNOindex][f].annoDES) << dels[0] << "actual overlap" << dels[0] << "expected overlap" << dels[0] << "OR" << dels[0] << "95% CI" << dels[0] << "p-value" << dels[0] << "p.adjusted" << dels[0] << "perm.p_value" << dels[0] << "BC" << dels[0] << "p-value(ALT)" << dels[0] << "p.adjusted(ALT)" << dels[0] << "BC(ALT)" << dels[0];
       } else {
-	(*fileout)  << (printID ? ANNOS[ANNOindex][f].annoID : ANNOS[ANNOindex][f].annoDES) << dels[0] << "actual overlap" << dels[0] << "expected overlap" << dels[0] << "OR" << dels[0] << "95% CI" << dels[0] << "p-value" << dels[0] << "p.adjusted" << dels[0] << "{p_value}" << dels[0] << "BC" << dels[0];
+	(*fileout)  << (printID ? ANNOS[ANNOindex][f].annoID : ANNOS[ANNOindex][f].annoDES) << dels[0] << "actual overlap" << dels[0] << "expected overlap" << dels[0] << "OR" << dels[0] << "95% CI" << dels[0] << "p-value" << dels[0] << "p.adjusted" << dels[0] << "perm.p_value" << dels[0] << "BC" << dels[0];
       }
 
     }

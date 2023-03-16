@@ -258,7 +258,7 @@ Rcpp::CharacterMatrix getResults(Rcpp::IntegerVector printTwoSided=1,
         cn[k++] = "95% CI";
         cn[k++] = "p-value";
         cn[k++] = "p.adjusted";
-        cn[k++] = "{p_value}";
+        cn[k++] = "perm.p_value";
         cn[k++] = "BC";
         cn[k++] = "p-value(ALT)";
         cn[k++] = "p.adjusted(ALT)";
@@ -270,7 +270,7 @@ Rcpp::CharacterMatrix getResults(Rcpp::IntegerVector printTwoSided=1,
         cn[k++] = "95% CI";
         cn[k++] = "p-value";
         cn[k++] = "p.adjusted";
-        cn[k++] = "{p_value}";
+        cn[k++] = "perm.p_value";
         cn[k++] = "BC";
       }
     }
