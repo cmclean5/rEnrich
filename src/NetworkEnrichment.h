@@ -47,7 +47,7 @@ class NetworkEnrichment : buildSets {
   int    calculateOverlapinCommunities(int, int,      const char*, const char*, bool = true );
   int    calculateOverlapinNetwork    (int, int,      const char*, const char*, bool = true );
   int    calculateOverlapinNetwork    (int, int, int, const char*, const char*, bool = true );
-  int    calculateOverlapinCommunities(int,           const char*, const char*, bool = true);
+  int    calculateOverlapinCommunities(int, bool,     const char*, const char*, bool = false, bool = false, bool = false );
   
   void calculateInteractionDistance(int, int, int, int, int, int, int, int &, double &);
 

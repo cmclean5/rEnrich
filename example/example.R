@@ -25,12 +25,22 @@ anno2 = as.data.frame(anno2)
 ## load clustering and annotation data
 rEnrich::load(x=membership,
               anno1=anno1,
-              anno2=anno2,
-              anno3=NULL)
+              anno2=anno2)
 
-## run enrichment analysis on loaded data
-rEnrich::run()
+## run enrichment analysis over annotation dataset 1
+rEnrich::run(useAnno=0)
 
-## get enrichment values 
-res = rEnrich::getResults()
+## get enrichment values running over annotation set 1
+res1 = rEnrich::getResults()
 
+## run enrichment analysis over annotation dataset 2
+rEnrich::run(useAnno=1)
+
+## get enrichment values running over annotation set 2
+res2 = rEnrich::getResults()
+
+## run enrichment analysis over annotation datasets 1 & 2
+rEnrich::run(useAnno=c(0,1))
+
+## get enrichment values running over annotation sets 1 & 2
+res3 = rEnrich::getResults()

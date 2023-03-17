@@ -1433,9 +1433,9 @@ void NetworkEnrichment::calculateFDR( int Study, int indexA, int indexB, int ind
       pv_sortedEXF.push_back ( pairDoubInt(p_exfisher[(i*M)+m], k) );
       pv_sortedCHI2.push_back( pairDoubInt(p_chi2    [(i*M)+m], k) );
 
-      //if( calRelDist ){
-      //pv_sortedRD.push_back ( pairDoubInt(p_dist [(i*M)+m], k) );
-      //}
+      if( calRelDist ){
+        pv_sortedRD.push_back ( pairDoubInt(p_dist [(i*M)+m], k) );
+      }
     }
 
     //adjust p-values calling 'BY' FDR algorithm
@@ -1447,9 +1447,9 @@ void NetworkEnrichment::calculateFDR( int Study, int indexA, int indexB, int ind
       CalculateFDR_BY( pv_sortedEXF, SIGMA, FDR, PV, LEVEL, fdr_valuesEXF );
       CalculateFDR_BY( pv_sortedCHI2,SIGMA, FDR, PV, LEVEL, fdr_valuesCHI2);
 
-      //if( calRelDist ){
-      //CalculateFDR_BY( pv_sortedRD,  SIGMA, FDR, PV, LEVEL, fdr_reldist );
-      //}
+      if( calRelDist ){
+        CalculateFDR_BY( pv_sortedRD,  SIGMA, FDR, PV, LEVEL, fdr_reldist );
+      }
     }
 
     //adjust p-values calling 'BH' FDR algorithm
@@ -1461,9 +1461,9 @@ void NetworkEnrichment::calculateFDR( int Study, int indexA, int indexB, int ind
       CalculateFDR_BH( pv_sortedEXF, SIGMA, FDR, PV, LEVEL, fdr_valuesEXF );
       CalculateFDR_BH( pv_sortedCHI2,SIGMA, FDR, PV, LEVEL, fdr_valuesCHI2);
 
-      //if( calRelDist ){
-      //CalculateFDR_BH( pv_sortedRD,  SIGMA, FDR, PV, LEVEL, fdr_reldist );
-      //}
+      if( calRelDist ){
+        CalculateFDR_BH( pv_sortedRD,  SIGMA, FDR, PV, LEVEL, fdr_reldist );
+      }
     }
 
     //adjust p-values calling 'BL' FDR algorithm
@@ -1475,9 +1475,9 @@ void NetworkEnrichment::calculateFDR( int Study, int indexA, int indexB, int ind
       CalculateFDR_BL( pv_sortedEXF, SIGMA, FDR, PV, LEVEL, fdr_valuesEXF );
       CalculateFDR_BL( pv_sortedCHI2,SIGMA, FDR, PV, LEVEL, fdr_valuesCHI2);
 
-      //if( calRelDist ){
-      //CalculateFDR_BL( pv_sortedRD,  SIGMA, FDR, PV, LEVEL, fdr_reldist );
-      //}
+      if( calRelDist ){
+        CalculateFDR_BL( pv_sortedRD,  SIGMA, FDR, PV, LEVEL, fdr_reldist );
+      }
     }
 
 
@@ -1531,7 +1531,7 @@ void NetworkEnrichment::calculateFDR( int Study, int indexA, int indexB, int ind
       padjustedCHI2[(i*M)+m] = fdr_valuesCHI2[k].first;
     }
 
-    /*
+    
     if( calRelDist ){
       K = fdr_reldist.size();
       for(k=0; k<K; k++){
@@ -1542,7 +1542,7 @@ void NetworkEnrichment::calculateFDR( int Study, int indexA, int indexB, int ind
       }
 
     }
-    */
+    
 
   }
 
@@ -2725,22 +2725,21 @@ int NetworkEnrichment::calculateOverlapinCommunities( int indexA, int indexB, co
       muCab[k]       = 0;
       nab[k]         = 0;
     }
-
-    /*
+    
     if( calRelDist ){
       //calculate the intersection distance
       p_dist      = (double*)calloc(A*B*M,sizeof(double));
       padjustedRD = (double*)calloc(A*B*M,sizeof(double));
       reldist     = (double*)calloc(A*B*M,sizeof(double));
       for(k=0; k<K; k++){
-	p_dist[k]      = 0;
-	padjustedRD[k] = 0;
-	reldist[k]     = 0;
+        p_dist[k]      = 0;
+        padjustedRD[k] = 0;
+        reldist[k]     = 0;
       }
     }
-    */
 
-     //linear indexing, size K is rows (A) x cols (B).
+
+    //linear indexing, size K is rows (A) x cols (B).
     K=A*B;
     for(k=0; k<K; k++){
       overlap[k] = 0;
@@ -2981,14 +2980,15 @@ int NetworkEnrichment::calculateOverlapinNetwork( int indexA, int indexB, int in
 }
 
 
-//Overlap between annotation file and communities in the network
-int NetworkEnrichment::calculateOverlapinCommunities( int Index, const char* outdir, const char* ext, bool runFDR ){
-
+//Overlap between selected annotation file and communities in the network
+int NetworkEnrichment::calculateOverlapinCommunities( int Index, bool runPermutations, const char* outdir, const char * ext, bool runFDR, bool alternativePrint, bool singlePerm ){
+                                                      
   int cal;
 
   setANNOindex( Index );
 
-  cal = calculateOverlapinCommunities(false, outdir, ext, runFDR, true);
+  cal = calculateOverlapinCommunities(runPermutations, outdir, ext, runFDR,
+                                      alternativePrint, singlePerm);
 
   return cal;
 
@@ -3226,12 +3226,11 @@ void NetworkEnrichment::printOverlapinCommunities( int indexA, int indexB, const
     if( useChi2 ){
       (*fileout) << "{p.chi2, adjusted}" << dels[0];
     }
-
-    /*
+    
     if( calRelDist ){
       (*fileout) << "{relDist, p.value, p.adjusted}" << dels[0];
     }
-    */
+    
   }
 
   (*fileout) << "" << endl;
@@ -3287,13 +3286,10 @@ void NetworkEnrichment::printOverlapinCommunities( int indexA, int indexB, const
 	if( useChi2 ){
 	  sprintf(buffer5,"%G, %G, %s", p_chi2[(k*M)+m], padjustedCHI2[(k*M)+m], starsCHI2.c_str());
 	}
-
-
-	/*
+	
 	if( calRelDist ){
 	  sprintf(buffer4,"%.1f, %G, %G", reldist[(k*M)+m], p_dist[(k*M)+m], padjustedRD[(k*M)+m]);
-	}
-	*/
+	}	
 
 	sprintf(buffer1,"%.1f, %.2f, %.2f, [%.2f,%.2f]", muCab[(k*M)+m],mn,ors,orL, orU);
 
@@ -3318,12 +3314,10 @@ void NetworkEnrichment::printOverlapinCommunities( int indexA, int indexB, const
 	if( useChi2 ){
 	  (*fileout) << buffer5 << dels[0];
 	}
-
-	/*
+	
 	if( calRelDist ){
 	  (*fileout) << buffer4 << dels[0];
-	}
-	*/
+	}	
 
       }
       (*fileout) << "" << endl;
