@@ -32,10 +32,10 @@ void reset(){ enrD=0; }
 // [[Rcpp::export]]
 void erase(){ if(enrD !=0){ delete enrD; } }
 
-//' Internal function to load each dataset
+//' Internal function to help load a sdataset
 //'
-//' This function flattens an inputted Rcpp::DataFrame object and 
-//' returns a Rcpp::StringVector object. 
+//' This function flattens an R DataFrame object,  
+//' returning an R StringVector object. 
 //'
 //' !Note! This internal function is not for regular users.
 //' Use \code{\link{run_enrichment}} for analysis.
@@ -122,16 +122,15 @@ Rcpp::StringVector fill_dataset( Rcpp::DataFrame r_set ){
 //' first column and group id in the second
 //' @param anno1 first annotation dataset with term id, term name and
 //' the element name in columns one, two and three respectively.
-//' @param anno2 second annotation dataset.
-
-// param anno3 third  annotation dataset.
+//' @param anno2 is an optional second annotation dataset.
+//' @param anno3 is an optional second annotation dataset.
 //'
 // [[Rcpp::export]]
 void load( Rcpp::Nullable<Rcpp::DataFrame> x     = R_NilValue,
            Rcpp::Nullable<Rcpp::DataFrame> anno1 = R_NilValue,
-           Rcpp::Nullable<Rcpp::DataFrame> anno2 = R_NilValue ){
-           //Rcpp::Nullable<Rcpp::DataFrame> anno3 = R_NilValue
-           //){  
+           Rcpp::Nullable<Rcpp::DataFrame> anno2 = R_NilValue,
+           Rcpp::Nullable<Rcpp::DataFrame> anno3 = R_NilValue
+           ){  
 
   int i;
 
@@ -143,7 +142,7 @@ void load( Rcpp::Nullable<Rcpp::DataFrame> x     = R_NilValue,
   vector<int>      ANNOS_ROWS;
   
   Rcpp::StringVector tmp;
-  string *mem, *annos1, *annos2;//, *annos3; 
+  string *mem, *annos1, *annos2, *annos3; 
 
   
   // reads in membership dataset
@@ -180,7 +179,7 @@ void load( Rcpp::Nullable<Rcpp::DataFrame> x     = R_NilValue,
      ANNOS.push_back(annos2);
   }
 
-  /*
+  
   // reads in 3rd annotation dataset
   if( !anno3.isNull() ){
     Rcpp::DataFrame ANNO3(anno3);
@@ -191,7 +190,7 @@ void load( Rcpp::Nullable<Rcpp::DataFrame> x     = R_NilValue,
     for(i=0; i<tmp.size(); i++){ annos3[i] = tmp(i); }
     ANNOS.push_back(annos3);
   }
-  */
+ 
   
   if( MEMBERSHIP.size() == 1 && ANNOS.size() > 0 ){
 
@@ -216,21 +215,24 @@ void load( Rcpp::Nullable<Rcpp::DataFrame> x     = R_NilValue,
 //' !Note! This internal function is not for regular users.
 //' Use \code{\link{run_enrichment}} for analysis.
 //'
-//' @param useAnno set the annotation dataset(s) to peform cluster enrichment analysis.
+//' @param method="cluster", whether to perform network or cluster enrichmnet analysis over annotation datasets.
+//' @param useAnno set the annotation dataset(s) to peform the cluster enrichment analysis.
 //' Default is 0, i.e. first loaded annotation set.
-//' @param useChi2 =0,
-//' @param useOneSided =0,
-//' @param useTwoSided =1,
-//' @param useRelDist =0,
-//' @param runPerm =0,
+//' @param useChi2 =0, boolean vlaue whether to calculate Chi2 p-values for cluster enrichemnt given two annotation sets.
+//' @param useOneSided =0, boolean (default set to FALSE), if set true the test statistic is tested the area under one side of a distribution (hypergeometric, chi2).
+//' @param useTwoSided =1, boolean (default set to TRUE), if set true the test statistic is tested the area under both sides of a distribution (hypergeometric, chi2).
+//' @param useRelDist =0, boolean value whether to calcuate the probability of the intersection distance for cluster enrichemnt given two annotation sets //' given by eqn (13) pg 8 (A. T. Kalinka 2014).
+//' @param runPerm =0, boolean value whether to preform a permutation study for cluster enrichemnt given one annotation set.
 //' @param singlePerm =0,
-//' @param setNOP =0,
-//' @param pesudoCount =-1.0,
-//' @param FDRmeth ="BY",
-//' @param useSeed =0
+//' @param setNOP =0, integer value to set the number pertuations (default is 1000) if preforming a permutation study for cluster enrichemnt
+//' given one annotation set.
+//' @param pesudoCount =-1.0, non zero value to avoid p-values of zero in the permutation test.
+//' @param FDRmeth ="BY", select the False Discovery Rate method to use. Choice of Benjamini and Hochberg FDR (BH), Benjamini and Liu FDR (BL), or Benjamini and Yekutieli FDR (BY). Default set to (BY).
+//' @param useSeed =0 set the random number seed if preforming a permutation study for cluster enrichemnt given one annotation set.
 //'
 // [[Rcpp::export]]
-void run( Rcpp::IntegerVector useAnno=0,
+void run( Rcpp::String method="cluster",
+          Rcpp::IntegerVector useAnno=0,
           Rcpp::IntegerVector useChi2=0,
           Rcpp::IntegerVector useOneSided=0,
           Rcpp::IntegerVector useTwoSided=1,
@@ -242,7 +244,7 @@ void run( Rcpp::IntegerVector useAnno=0,
           Rcpp::IntegerVector useSeed=0,
           Rcpp::String FDRmeth="BY" ){
 
-  int i,cal,useAnnoSize;
+  int i,cal,useAnnoSize,analysisMthd;
 
   vector<int> anno;
 
@@ -257,7 +259,11 @@ void run( Rcpp::IntegerVector useAnno=0,
 
   if( enrD != 0 ){
 
-    // Set which annotation set to use: 0 (default), 1 or 0 and 1.
+    // Set which enrichment method to use
+    if( method == "network" ){ analysisMthd=0; }
+    else                     { analysisMthd=1; }
+
+    // Set which annotation set to use: 0 (default).
     useAnnoSize = useAnno.size();
     switch( useAnnoSize ){
     case 1:
@@ -266,6 +272,11 @@ void run( Rcpp::IntegerVector useAnno=0,
     case 2:
       anno.push_back(useAnno[0]);
       anno.push_back(useAnno[1]);
+      break;
+    case 3:
+      anno.push_back(useAnno[0]);
+      anno.push_back(useAnno[1]);
+      anno.push_back(useAnno[2]);
       break;
     default:
       anno.push_back(0);
@@ -300,26 +311,55 @@ void run( Rcpp::IntegerVector useAnno=0,
       }
     }
 
-    if( anno.size() == 1 ){
+    if( analysisMthd == 0 ){
 
-      // one annotation set overlaid over communities
-      cal = enrD->calculateOverlapinCommunities(anno[0],
-                                                runPerm[0],
-                                                OUTDIR.get_cstring(),
-                                                Ext.get_cstring(),
-                                                useFDR,
-                                                false,
-                                                singlePerm[0]);
+      if( anno.size() == 2 ){
+      
+        cal = enrD->calculateOverlapinNetwork(anno[0],
+                                             anno[1],
+                                             OUTDIR.get_cstring(),
+                                             Ext.get_cstring(),
+                                             useFDR);
+
+      }
+
+      if( anno.size() == 3 ){
+      
+        cal = enrD->calculateOverlapinNetwork(anno[0],
+                                             anno[1],
+                                             anno[2],
+                                             OUTDIR.get_cstring(),
+                                             Ext.get_cstring(),
+                                             useFDR);
+
+      }      
+      
     }
+    
+    if( analysisMthd == 1 ){
+    
+      if( anno.size() == 1 ){
 
-    if( anno.size() == 2 ){
+        // one annotation set overlaid over communities
+        cal = enrD->calculateOverlapinCommunities(anno[0],
+                                                  runPerm[0],
+                                                  OUTDIR.get_cstring(),
+                                                  Ext.get_cstring(),
+                                                  useFDR,
+                                                  false,
+                                                  singlePerm[0]);
+      }
 
-      // two annotation set overlaid over communities
-      cal = enrD->calculateOverlapinCommunities(anno[0],
-                                                anno[1],
-                                                OUTDIR.get_cstring(),
-                                                Ext.get_cstring(),
-                                                useFDR);
+      if( anno.size() == 2 ){
+
+        // two annotation set overlaid over communities
+        cal = enrD->calculateOverlapinCommunities(anno[0],
+                                                  anno[1],
+                                                  OUTDIR.get_cstring(),
+                                                  Ext.get_cstring(),
+                                                  useFDR);
+
+      }
 
     }
     

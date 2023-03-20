@@ -1,4 +1,199 @@
 # rEnrich
+
+Package Name       : rEnrich
+
+Package Version    : 
+
+Package Description: Use of the Hypergeometric distribution, to calculate enrichment in clustered PPI networks.
+                   
+Date               : 2016
+
+Author             : Colin D Mclean <Colin.D.Mclean@ed.ac.uk>
+
+Copyright (C) 2016 Colin Mclean 
+
+##      Package Description
+
+Use of the Hypergeometric distribution to calculate enrichment in clustered networks. The probability nodes intersection between two annotation sets, at the network level, was calculated using hypergeometric distribution (Pocklington et al., 2006):
+
+```math
+P\left(X=\mu_{AB}; \mu_{AB},A,B,N \right) = \frac{ \binom{A}{\mu_{AB}} \binom{N-A}{B-\mu_{AB}} } { \binom{N}{B} }
+```
+
+```math
+\[  \text{P-value(\mu_{AB})} =
+ \displaystyle\sum^{\mu_{AB}}_{i=0}
+  \begin{cases}
+    P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{AB}\right)\\
+    0                         & P\left(X=i\right) > P\left(X=\mu_{AB}\right)
+  \end{cases}
+\]
+```
+
+Where $N$ is taken as the network size, $A$ and $B$ the number of annotations of types $a$ and $brespectively, and $\mu_{AB}$ the number of genes overlapping between the two annotations sets. The hypergeometric distribution was also used to calculate the significance of enrichment of each cluster for each annotation:
+
+```math
+P\left(X=\mu_{a}; \mu_{a},A,C_N ,N \right) = \frac{ \binom{A}{\mu_{a}} \binom{N-A}{C_N-\mu_{A}} } { \binom{N}{C_N} }
+```
+
+```math
+\[  \text{P-value(\mu_{a})} =
+ \displaystyle\sum^{\mu_{a}}_{i=0}
+  \begin{cases}
+    P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{a}\right)\\
+    0                         & P\left(X=i\right) > P\left(X=\mu_{a}\right)
+  \end{cases}
+\]
+```
+
+Where $N$ is the total number of genes in the network; $C_n$ the number of genes in the community; $A$ the total number of functional annotated genes in the network, and $]mu{a}$ the number of functional annotated genes per community. P-values, $\leq$ 10-2, were tested for their strength of significance (sig), by recording the percentage of P-values found from every community/annotation combination, lower than or equal to the observed P-value, when 1000 random permutations of the annotation labels were made. P-values found with a strength of significance < 1% were considered statistically significant. P-values values were also tested against the more stringent Bonferroni correction at the 0.05 (*), 0.01 (**) and 0.001 (***) significance levels.
+
+We also tested the significance of the overlap between two annotation sets within a community, or Bridging region, relative to the annotation set sizes at the network level:
+
+```math
+P\left(X=\mu_{ab}; \mu_{ab},n_a, n_b, n, A,B,N \right) =
+\frac{ \binom{n_a}{\mu_{ab}} \binom{n-n_a}{n_b-\mu_{ab}} \binom{A \cap B}{\mu_{ab}}  \binom{N-A \cap B}{n-\mu_{ab}} } { \binom{n}{n_b} \binom{N}{n} }
+```
+
+```math
+\[  \text{P-value(\mu_{ab})} =
+ \displaystyle\sum^{\mu_{ab}}_{i=0}
+  \begin{cases}
+    P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{ab}\right)\\
+    0                         & P\left(X=i\right) > P\left(X=\mu_{ab}\right)
+  \end{cases}
+\]
+```
+
+Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$ , and $\mu_{ab}$ the number of genes overlapping between the two annotation sets in community, or Bridging region, of size $n$. This is similar in spirit to calculating the probability of the intersection distance between two distributions given in eqn (13) pg 8 A. T. Kalinka, The probability of drawing intersesions: extending the hypergeometric distribution, arXiv:1305.0717v5 (2014). Where we'd set v1 = v2, and where we've focused on the population overlap
+relative to the the size of the community/region, and overlap found in it.
+
+### References
+
+[1] M. Galassi et al, GNU Scientific Library Reference Manual (3rd Ed.), ISBN 0954612078.
+
+[2] Pocklington A, Cumiskey D, Armstrong D, Grant S: The proteomes of neurotransmitter receptor complexes from modular networks
+with distributed functionality underlying plasticity and behaviour, MSB, 2, (2006).
+
+[3] Alex T. Kalinka, The probablility of drawing intersections: extending the hypergeometric distribution, arXiv:1305.0717v5, (2014).
+
+[4] Benjamini, Y., and Hochberg, Y. Controlling the false discovery rate:  a practical and powerful approach to multiple testing.
+Journal of the Royal Statistical Society Series B 57 (1995), 289–300.
+
+[5] Benjamini, Y., and Liu, W. A step-down multiple hypotheses testing procedure that controls the false discovery rate under independence. Journal of Statistical Planning and Inference 82 (1999), 163–170.
+
+[6] Benjamini, Y., and Yekutieli, D. (2001). The control of the false discovery rate in multiple testing under dependency. Annals of Statistics, 29, 1165-1188.
+
+
+### TO INSTALL AND BUILD
+
+(1) This package makes use of the GNU Scientific Library (GSL); upon request, we can provide an implementation which is independent of libraries, making use of the subroutines from Numerical Recipes We use the default location of the gsl directory at: /usr/local/include/gsl. If the directory is not installed on the standard search path of your compiler, you will also need to provide its location in the Makefile at: GSLCFLAGS = -I/location/to/your/gsl
+
+## Compile & GSL environment variables setup
+
+1) Install GSL:
+
+1.1) Using mac can run: > brew install gsl
+
+2) Set environment variables (replacing your GSL path in GSL_HOME):
+
+2.1) in .bashrc:    
+      
+      export GSL_HOME="/opt/homebrew/Cellar/gsl/2.7.1"
+      
+      export GSL_CFLAGS="${GSL_HOME}/include"
+      
+      export GSL_LIBS="${GSL_HOME}/lib"
+      
+      export GSL_CONFIG="${GSL_HOME}/bin/gsl-config"
+      
+      export PATH="${GSL_HOME}/bin:${PATH}"
+      
+      export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GSL_HOME}/lib"
+
+3) Run autoconfig.ac:
+
+3.1) > autoconf
+
+4) Build and install:
+
+4.1) > R CMD build rEnrich
+
+4.2) > R CMD INSTALL rEnrich_1.0.tar.gz
+
+5) Run example:
+
+5.1) > cd rEnrich/example/
+
+5.2) > R
+
+    
+### TO RUN
+
+The package makes use of the clustering results (of the respective graphs located in the Graphs directory) found the directory 'Clustering', and the annotation files stored in directory 'Annotation'. The directory 'parameterFiles' 
+
+To run the clustering package at the command line type the following:
+
+EXAMPLE 1:
+
+To run cluster enrichment of the Spectral method on the Presynaptic network for disease annotation:  
+> ./run -opt 1 -Comfile ../Clustering/PPI_Presynaptic_Published/Spectral_communities_cytoscape.csv -Annofile ../Annotations/flatfile_human_gene2HDO.csv
+
+EXAMPLE 2:
+
+To run cluster enrichment of the Spectral method on the Presynaptic network for the overlap of disease and synaptic functional annotation: 
+> ./run -opt 2 -Comfile  ../Clustering/PPI_Presynaptic_Published/Spectral_communities_cytoscape.csv -Annofile ../Annotations/flatfile_human_gene2HDO.csv -Annofile ../Annotations/SCH_flatfile.csv
+
+EXAMPLE 3:
+
+To run network level enrichment for disease, synaptic function and cell type annotation sets:  	
+> ./run -opt 4 -Comfile  ../Clustering/PPI_Presynaptic_Published/Spectral_communities_cytoscape.csv -Annofile ../Annotations/flatfile_human_gene2HDO.csv -Annofile ../Annotations/SCH_flatfile.csv -Annofile ../Annotations/celltypes_PMID27991900_L2.csv
+
+EXAMPLE 4:
+
+In addition to the single command line studies above, we also provide the bash scripts 'submitClustEnrch.sh' and 'submitOverlapEnrch.sh', to the enrichment package through various combinations of clustering results, annotation sets and graphs. This is controlled by the parameter files found in the folder '../parameterFiles'.
+
+EXAMPLE 5:
+
+For example, get the cluster enrichment results for algorithms: 'Spectral', 'infomap' and 'sgG5' for disease and synaptic functional groups on the presynaptic network, we would set:
+
+> emacs ../parameterFiles/graphs.csv
+
+1       PPI_Presynaptic
+0       PPI_PSP
+0       PPI_PSP_consensus
+
+> emacs ../parameterFiles/clusteringAlg.csv
+
+0	fc_communities.csv	fc
+0	lourvain_communities.csv	lourvain
+0	lec_communities.csv	lec
+1	Spectral_communities.csv	Spectral
+1	infomap_communities.csv	infomap
+0	sgG1_communities.csv	sgG1
+0	SVI_communities.csv	SVI
+0	wt_communities.csv	wt
+
+> emacs ../parameterFiles/annotations.csv
+
+2	flatfile_human_gene2HDO.csv	topOnto_ovg
+0	flatfile_chua.csv	chua
+1	SCH_flatfile.csv	SCH
+0	flatfile.go.MF.csv	GOMF
+0	flatfile.go.BP.csv	GOBP
+0	flatfile.go.CC.csv	GOCC
+
+Then run:
+
+> ./submitClustEnrch.sh
+
+EXAMPLE 6:
+
+To get the clusteral enrichment overlaps for algorithms: 'Spectral', 'infomap' and 'sgG5' for disease and synaptic functional groups on the presynaptic network, we would then run:
+
+> ./submitOverlapEnrch.sh
+
+# rEnrich
 Test enrichment of network clusters given node annotation data
 
 
@@ -42,3 +237,19 @@ Test enrichment of network clusters given node annotation data
 5.2) > R
 
 5.3) > source('example.R')
+
+
+##      GNU General Public Licenses v3 
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License (GNU_GPL_v3)  along with this program.  If not, see
+<http://www.gnu.org/licenses/>.
+
+
+##      Funding Acknowledgement
+
+
+This open source software code was developed in part or in whole in the Human Brain Project, funded from the European Union’s Horizon 2020 Framework Programme for Research and Innovation under the Specific Grant Agreement No. 720270 (Human Brain Project SGA1).
