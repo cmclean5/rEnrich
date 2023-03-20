@@ -21,7 +21,9 @@ This package was initally constructed to calculate the probability genes interse
 ```math
 P\left(X=\mu_{AB}; \mu_{AB},A,B,N \right) = \frac{ \binom{A}{\mu_{AB}} \binom{N-A}{B-\mu_{AB}} } { \binom{N}{B} }
 ```
-### 
+Where $N$ is taken as the network size, $A$ and $B$ the number of annotations of types $a$ and $brespectively, and $\mu_{AB}$ the number of genes overlapping between the two annotations sets.
+
+### One-sided Enrichment
 
 ```math
 \[  \text{P-value($\mu_{AB}$)} =
@@ -32,12 +34,20 @@ P\left(X=\mu_{AB}; \mu_{AB},A,B,N \right) = \frac{ \binom{A}{\mu_{AB}} \binom{N-
   \end{cases}
 \]
 ```
+### One-Sided Depletion
 
-Where $N$ is taken as the network size, $A$ and $B$ the number of annotations of types $a$ and $brespectively, and $\mu_{AB}$ the number of genes overlapping between the two annotations sets. The hypergeometric distribution was also used to calculate the significance of enrichment of each cluster for each annotation:
+### Two-sided Enrichment
+
+### Two-sided Depletion
+
+### Clustered Network Enrichment given one annotation set
+
+The hypergeometric distribution was also used to calculate the significance of enrichment a clustered network given an annotation type:
 
 ```math
 P\left(X=\mu_{a}; \mu_{a},A,C_N ,N \right) = \frac{ \binom{A}{\mu_{a}} \binom{N-A}{C_N-\mu_{A}} } { \binom{N}{C_N} }
 ```
+Where $N$ is the total number of genes in the network; $C_n$ the number of genes in the community; $A$ the total number of functional annotated genes in the network, and $mu{a}$ the number of functional annotated genes per community.
 
 ```math
 \[  \text{P-value($\mu_{a}$)} =
@@ -49,7 +59,7 @@ P\left(X=\mu_{a}; \mu_{a},A,C_N ,N \right) = \frac{ \binom{A}{\mu_{a}} \binom{N-
 \]
 ```
 
-Where $N$ is the total number of genes in the network; $C_n$ the number of genes in the community; $A$ the total number of functional annotated genes in the network, and $]mu{a}$ the number of functional annotated genes per community. P-values, $\leq$ 10-2, were tested for their strength of significance (sig), by recording the percentage of P-values found from every community/annotation combination, lower than or equal to the observed P-value, when 1000 random permutations of the annotation labels were made. P-values found with a strength of significance < 1% were considered statistically significant. P-values values were also tested against the more stringent Bonferroni correction at the 0.05 (*), 0.01 (**) and 0.001 (***) significance levels.
+P-values, $\leq$ 10-2, were tested for their strength of significance (sig), by recording the percentage of P-values found from every community/annotation combination, lower than or equal to the observed P-value, when 1000 random permutations of the annotation labels were made. P-values found with a strength of significance < 1% were considered statistically significant. P-values values were also tested against the more stringent Bonferroni correction at the 0.05 (*), 0.01 (**) and 0.001 (***) significance levels.
 
 We also tested the significance of the overlap between two annotation sets within a community, or Bridging region, relative to the annotation set sizes at the network level:
 
