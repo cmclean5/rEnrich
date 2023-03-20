@@ -78,7 +78,7 @@ relative to the the size of the community/region, and overlap found in it.
 N  & \text{Number of nodes in the network}\\
 A  & \text{Number of annotation types A}\\
 B  & \text{Number of annotation types B}\\
-\mu_{AB} & \text{Overlap of annotation types A & B}\\
+\mu_{AB} & \text{Overlap of annotation types A \& B}\\
 C  & \text{Number of annotation types C}\\
 M  & \text{Number of communities}\\
 C_N & \text{Number of nodes in a community}\\
