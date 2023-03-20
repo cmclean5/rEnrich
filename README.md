@@ -14,11 +14,14 @@ Copyright (C) 2016 Colin Mclean
 
 ##      Package Description
 
-Use of the Hypergeometric distribution to calculate enrichment in clustered networks. The probability nodes intersection between two annotation sets, at the network level, was calculated using hypergeometric distribution (Pocklington et al., 2006):
+This package was initally constructed to calculate the probability genes intersection between two annotation sets, at the network level, using hypergeometric distribution (Pocklington et al., 2006):
+
+### Network Enrichment given two annotation sets 
 
 ```math
 P\left(X=\mu_{AB}; \mu_{AB},A,B,N \right) = \frac{ \binom{A}{\mu_{AB}} \binom{N-A}{B-\mu_{AB}} } { \binom{N}{B} }
 ```
+### 
 
 ```math
 \[  \text{P-value($\mu_{AB}$)} =
@@ -67,6 +70,24 @@ P\left(X=\mu_{ab}; \mu_{ab},n_a, n_b, n, A,B,N \right) =
 
 Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$ , and $\mu_{ab}$ the number of genes overlapping between the two annotation sets in community, or Bridging region, of size $n$. This is similar in spirit to calculating the probability of the intersection distance between two distributions given in eqn (13) pg 8 A. T. Kalinka, The probability of drawing intersesions: extending the hypergeometric distribution, arXiv:1305.0717v5 (2014). Where we'd set v1 = v2, and where we've focused on the population overlap
 relative to the the size of the community/region, and overlap found in it.
+
+### Notation
+
+```math
+\begin{cases}
+N  & \text{Number of nodes in the network}\\
+A  & \text{Number of annotation types A}\\
+B  & \text{Number of annotation types B}\\
+\mu_{AB} & \text{Overlap of annotation types A & B}\\
+C  & \text{Number of annotation types C}\\
+M  & \text{Number of communities}\\
+C_N & \text{Number of nodes in a community}\\
+a  & \text{Number of annotation types A in a community}\\
+b  & \text{Number of annotation types B in a community}\\
+c  & \text{Number of annotation types C in a community}\\
+\mu{ab} & \text{}
+\end{cases}
+```
 
 ### References
 
