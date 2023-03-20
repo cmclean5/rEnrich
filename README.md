@@ -21,7 +21,7 @@ P\left(X=\mu_{AB}; \mu_{AB},A,B,N \right) = \frac{ \binom{A}{\mu_{AB}} \binom{N-
 ```
 
 ```math
-\[  \text{P-value(\mu_{AB})} =
+\[  \text{P-value($\mu_{AB}$)} =
  \displaystyle\sum^{\mu_{AB}}_{i=0}
   \begin{cases}
     P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{AB}\right)\\
@@ -37,7 +37,7 @@ P\left(X=\mu_{a}; \mu_{a},A,C_N ,N \right) = \frac{ \binom{A}{\mu_{a}} \binom{N-
 ```
 
 ```math
-\[  \text{P-value(\mu_{a})} =
+\[  \text{P-value($\mu_{a}$)} =
  \displaystyle\sum^{\mu_{a}}_{i=0}
   \begin{cases}
     P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{a}\right)\\
@@ -56,7 +56,7 @@ P\left(X=\mu_{ab}; \mu_{ab},n_a, n_b, n, A,B,N \right) =
 ```
 
 ```math
-\[  \text{P-value(\mu_{ab})} =
+\[  \text{P-value($\mu_{ab}$)} =
  \displaystyle\sum^{\mu_{ab}}_{i=0}
   \begin{cases}
     P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{ab}\right)\\
