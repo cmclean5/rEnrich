@@ -61,6 +61,8 @@ Where $N$ is the total number of genes in the network; $C_n$ the number of genes
 
 P-values, $\leq$ 10-2, were tested for their strength of significance (sig), by recording the percentage of P-values found from every community/annotation combination, lower than or equal to the observed P-value, when 1000 random permutations of the annotation labels were made. P-values found with a strength of significance < 1% were considered statistically significant. P-values values were also tested against the more stringent Bonferroni correction at the 0.05 (*), 0.01 (**) and 0.001 (***) significance levels.
 
+### Clustered Network Enrichment given two annotation sets
+
 We also tested the significance of the overlap between two annotation sets within a community, or Bridging region, relative to the annotation set sizes at the network level:
 
 ```math
