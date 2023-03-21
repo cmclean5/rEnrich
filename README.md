@@ -14,7 +14,7 @@ Copyright (C) 2016 Colin Mclean
 
 ##      Package Description
 
-This package was built to help reproduce the down-stream analysis results in several proteomics papers [1-7], and as a wrapper for underlying C/C++ code. The package contains a number of statistical tests of the enrichment of a network, or clustered network, given a set of annotation data.
+This package was built to help reproduce the down-stream analysis results found in several proteomics papers [1-7], and as a wrapper for underlying C/C++ code. The package contains a number of statistical tests of the enrichment of a network, or clustered network, given a set of annotation data.
 
 ### Network Enrichment given two annotation sets 
 
