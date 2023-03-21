@@ -14,9 +14,11 @@ Copyright (C) 2016 Colin Mclean
 
 ##      Package Description
 
-This package was initally constructed to calculate the probability genes intersection between two annotation sets, at the network level, using hypergeometric distribution (Pocklington et al., 2006):
+This package was built to help reproduce the down-stream analysis results in several proteomics papers [1-7], and as a wrapper for underlying C/C++ code. The package contains a number of statistical tests of the enrichment of a network, or clustered network, given a set of annotation data.
 
 ### Network Enrichment given two annotation sets 
+
+Initally, the package was constructed to calculate the probability of gene intersection between two annotation sets, at the network level, using hypergeometric distribution (Pocklington et al., 2006):
 
 ```math
 P\left(X=\mu_{AB}; \mu_{AB},A,B,N \right) = \frac{ \binom{A}{\mu_{AB}} \binom{N-A}{B-\mu_{AB}} } { \binom{N}{B} }
@@ -102,6 +104,20 @@ c  & \text{Number of annotation types C in a community}\\
 ```
 
 ### References
+
+[1] Sorokina, O., Mclean, C., Croning, M.D.R. et al. A unified resource and configurable model of the synapse proteome and its role in disease. Sci Rep 11, 9967 (2021).
+
+[2] Kanellopoulos, A. et al: Aralar Sequesters GABA into Hyperactive Mitochondria, Causing Social Behaviour Deficits, Cell, 180, 1-20 (2020).
+
+[3] Chapelle, J. et al: Dissecting the shared and context-dependent pathways mediated by the p140Cap adaptor protein in cancer and in neurons, Front. Cell Dev. Biol., 15 (2019).
+
+[4] R. Roy, et al: Regional Diversity in the Postsynaptic Proteome of the Mouse Brain, Proteomes, 6, 31, (2018).
+
+[5] A. Alfieri, et al: Synaptic Interactome Mining Reveals p140Cap as a New Hub for PSD Proteins Involved in Psychiatric and Neurological Disorders, Front. Mol. Neurosci., 10, (2017).
+
+[6] E. Fernandez, et al: Arc requires PSD95 for assembly into postsynaptic complexes involved with neural dysfunction and intelligence, Cell Reports, 21, 679-691, (2017).
+
+[7] C. Mclean, X. He, I.T Simpson, D.J Armstrong: Improved Functional Enrichment Analysis of Biological Networks using Scalable Modularity Based Clustering, (2016), J Proteomics Bioinformatics, 9:9-18, doi:10.4172/jpb.1000383.
 
 [1] M. Galassi et al, GNU Scientific Library Reference Manual (3rd Ed.), ISBN 0954612078.
 
