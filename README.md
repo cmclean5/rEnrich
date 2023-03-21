@@ -25,16 +25,14 @@ P\left(X=\mu_{AB}; \mu_{AB},A,B,N \right) = \frac{ \binom{A}{\mu_{AB}} \binom{N-
 ```
 Where $N$ is taken as the network size, $A$ and $B$ the number of annotations of types $a$ and $b$ respectively, and $\mu_{AB}$ the number of genes (i.e. network nodes) overlapping between the two annotations sets.
 
-| P-value        | Description           | Definition  |
-| ------------- |:-------------:| -----:| 
-| p.value       | One-Sided Enrichment | $$
-\text{P-value($\mu_{AB}$)} =
+| P-value       | Description          | Definition  |
+| ------------- |:--------------------:| -----------:| 
+| p.value       | One-Sided Enrichment | $$\text{P-value(\mu_{AB})} =
  \displaystyle\sum^{\mu_{AB}}_{i=0}
   \begin{cases}
     P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{AB}\right)\\
     0                         & P\left(X=i\right) > P\left(X=\mu_{AB}\right)
-  \end{cases}
-$$  |
+  \end{cases}$$  |
 
 ### One-sided Enrichment
 
