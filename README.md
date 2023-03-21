@@ -27,14 +27,14 @@ Where $N$ is taken as the network size, $A$ and $B$ the number of annotations of
 
 | P-value        | Description           | Definition  |
 | ------------- |:-------------:| -----:| 
-| p.value$^{Enr}_{1s.d}$ | One-Sided Enrichment | ```math
+| p.value       | One-Sided Enrichment | $$
 \text{P-value($\mu_{AB}$)} =
  \displaystyle\sum^{\mu_{AB}}_{i=0}
   \begin{cases}
     P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{AB}\right)\\
     0                         & P\left(X=i\right) > P\left(X=\mu_{AB}\right)
   \end{cases}
-```  |
+$$  |
 
 ### One-sided Enrichment
 
