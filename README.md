@@ -154,7 +154,7 @@ We also tested the significance of the overlap between two annotation sets withi
 
 ```math
 P\left(X=\mu_{ab}; \mu_{ab},n_a, n_b, n, A[a],B[b],N \right) =
-\frac{ \binom{A[a] \cup B[b]}{\mu_{ab}} \binom{N-A[a] \cup B[b]}{n-\mu_{ab}} \binom{A[a]}{a} \binom{N-A[a]}{n-a} \binom{B[b]}{b} \binom{N-B[b]}{n-b} } {3 \binom{N}{n} }
+\frac{ \binom{A[a] \cup B[b]}{\mu_{ab}} \binom{N-A[a] \cup B[b]}{n-\mu_{ab}} \binom{A[a]}{n_a} \binom{N-A[a]}{n-n_a} \binom{B[b]}{n_b} \binom{N-B[b]}{n-n_b} } {3 \binom{N}{n} }
 ```
 Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$, and $\mu_{ab}$ the number of nodes overlapping between the two annotation sets in a community of size $n$. This is similar in spirit to calculating the probability of the intersection distance between two distributions given in eqn (13) pg 8 in [13]. Where we have set $v1 = v2$, and where we have focused on the population overlap relative to the the size of the community, and overlap found in it.
 
@@ -197,7 +197,7 @@ The code will calculate both one- and two-side p-values for enrichment and deple
 #### Hypergeometric mean
 
 ```math
-   \text{mean$_{ab}$} = \frac{ n \times A[a] \cap B[b]}{N} 
+   \text{mean$_{ab}$} = \frac{ n \times A[a] \cup B[b]}{N} 
 ```
 <!--Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $n$ the number of nodes in the community.-->
 
@@ -226,12 +226,19 @@ As part of the clustered network enrichment given two annotation sets analysis, 
 
 We first construct the $2\times2$ contingency table (CT):
 
-|                            |                          |          |               |        |                |
-| -------------------------- | ------------------------ | -------- | ------------- | ------ | -------------- |
-| $\mu_{ab}$                 | $n - \mu_{ab}$           | $a$      | $n-a$         | $b$    | $n-b$          |
-| $A[a] \cup B[b]-\mu_{ab}$  | $N - A[a] \cup B[b] - n$ | $A - a$  | $N-n-a-A[a]$  | $B-b$  | $N-n-b-B[b]$   |
+|                            |                          |              |                |            |                |         |
+| -------------------------- | ------------------------ | ------------ | -------------- | ---------- | -------------- | ------- |
+| $\mu_{ab}$                 | $n - \mu_{ab}$           | $n_a$        | $n-n_a$        | $n_b$      | $n-n_b$        | $3n$    |
+| $A[a] \cup B[b]-\mu_{ab}$  | $N - A[a] \cup B[b] - n$ | $A[a] - n_a$ | $N-n-n_a-A[a]$ | $B[b]-n_b$ | $N-n-n_b-B[b]$ | $3(N-n)$|
+| $A[a] \cup B[b]$           | $N-A[a] \cup B[b]$       | $A$          | $N-A[a]$       | $B[b]$     | $N-B[b]$       | $3N$    |
 
-The $\chi^2$-(chi-squared) test statistic 
+The $\chi^2$-(chi-squared) test statistic is then:
+
+```math
+\chi^2 = \displaystyle\sum^{Nr}_{i=0} \displaystyle\sum^{Nc}_{j=0} 
+\frac{(O_{ij} - E_{ij})^2}{E_{ij}}
+```
+Where $O_{ij}$ is the observed entry in the contingency table, and $E_{ij}$ the expected value given by $ \frac{ \sum_i. O_{i.} \times \sum_j O_{.j}}{ \sum_{ij} O_{ij}}$ 
 
 ### Notation
 
@@ -246,9 +253,9 @@ B[b]  & \text{number of annotation types $b$ in annotation set $B$}\\
 C  & \text{Number of annotation types C}\\
 M  & \text{Number of communities}\\
 n  & \text{Number of nodes in a community}\\
-a  & \text{Number of annotation types A in a community}\\
-b  & \text{Number of annotation types B in a community}\\
-c  & \text{Number of annotation types C in a community}\\
+n_a  & \text{Number of annotation types $a$ in a community}\\
+n_b  & \text{Number of annotation types $b$ in a community}\\
+n_c  & \text{Number of annotation types $c$ in a community}\\
 \mu_{ab} & \text{Overlap of annotation types $a$ in set $A$ \& annotations types $b$ in set $B$ in a community}\\
 np & \text{number of random permutations}
 \end{cases}
