@@ -147,19 +147,64 @@ We also tested the significance of the overlap between two annotation sets withi
 P\left(X=\mu_{ab}; \mu_{ab},n_a, n_b, n, A[a],B[b],N \right) =
 \frac{ \binom{n_a}{\mu_{ab}} \binom{n-n_a}{n_b-\mu_{ab}} \binom{A[a] \cap B[b]}{\mu_{ab}}  \binom{N-A[a] \cap B[b]}{n-\mu_{ab}} } { \binom{n}{n_b} \binom{N}{n} }
 ```
-Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$, and $\mu_{ab}$ the number of nodes overlapping between the two annotation sets in a community of size $n$. This is similar in spirit to calculating the probability of the intersection distance between two distributions given in eqn (13) pg 8 A. T. Kalinka, The probability of drawing intersesions: extending the hypergeometric distribution, arXiv:1305.0717v5 (2014). Where we'd set v1 = v2, and where we've focused on the population overlap
-relative to the the size of the community/region, and overlap found in it.
+Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$, and $\mu_{ab}$ the number of nodes overlapping between the two annotation sets in a community of size $n$. This is similar in spirit to calculating the probability of the intersection distance between two distributions given in eqn (13) pg 8 A. T. Kalinka, The probability of drawing intersesions: extending the hypergeometric distribution, arXiv:1305.0717v5 (2014). Where we have set $v1 = v2$, and where we have focused on the population overlap relative to the the size of the community, and overlap found in it.
+
+#### One-sided Enrichment
 
 ```math
-\text{P-value($\mu_{ab}$)} =
+\text{p.value$^{enr}_{1}$($\mu_{ab}$)} =
  \displaystyle\sum^{\mu_{ab}}_{i=0}
   \begin{cases}
     P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{ab}\right)\\
     0                         & P\left(X=i\right) > P\left(X=\mu_{ab}\right)
   \end{cases}
 ```
+#### One-Sided Depletion
 
-Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$ , and $\mu_{ab}$ the number of genes overlapping between the two annotation sets in community, or Bridging region, of size $n$. This is similar in spirit to calculating the probability of the intersection distance between two distributions given in eqn (13) pg 8 [13], where we have set $v1 = v2$, and where we have focused on the population overlap relative to the the size of the community and overlap found in it. 
+```math
+\text{p.value$^{dep}_{1}$($\mu_{ab}$)} =
+ \displaystyle\sum^{\mu_{ab}}_{i=0}
+  \begin{cases}
+    P\left( X=i \right)       & P\left(X=i\right) \geq P\left(X=\mu_{ab}\right)\\
+    0                         & P\left(X=i\right) < P\left(X=\mu_{ab}\right)
+  \end{cases}
+```
+
+#### Two-sided Enrichment
+
+```math
+   \text{p.value$^{enr}_{2}$($\mu_{ab}$)} = 2 \times \text{p.value$^{enr}_{1}$($\mu_{ab}$)} 
+```
+
+#### Two-sided Depletion
+
+```math
+   \text{p.value$^{dep}_{2}$($\mu_{ab}$)} = 2 \times \text{p.value$^{dep}_{1}$($\mu_{ab}$)} 
+```
+
+#### Hypergeometric mean
+
+```math
+   \text{mean$_{ab}$} = \frac{ n \times \binom{A[a] \cap B[b]}{N} 
+```
+Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $n$ the number of nodes in the community.
+
+#### Odds Ratio
+
+```math
+   \text{OR$_{ab}$} = \frac{ (\mu_{a} \times (N- A[a] \cap B[b] + \mu_{ab} - n) }{ (n - \mu_{ab}) \times (A[a] \cap B[b] - \mu_{ab}) } 
+```
+
+Where the 95% Confidence Intervals are calculated as [9]:
+
+```math
+\text{95\% CI} = \log(\text{OR$_{ab}$}) \pm 1.96 \times \left(\frac{1}{\mu_{ab}} + \frac{1}{(n-\mu_{ab})} + \frac{1}{(A[a] \cap B[b]-\mu_{ab})} + \frac{1}{(N-A[a] \cap B[b]-\mu_{ab}-n)} \right)^{1/2}
+```
+
+### False Discovery Rate
+
+Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH).
+
 
 #### Relative Distance
 
