@@ -1,17 +1,5 @@
 # rEnrich
 
-Package Name       : rEnrich
-
-Package Version    : 
-
-Package Description: Use of the Hypergeometric distribution, to calculate enrichment in clustered PPI networks.
-                   
-Date               : 2016
-
-Author             : Colin D Mclean <Colin.D.Mclean@ed.ac.uk>
-
-Copyright (C) 2016 Colin Mclean 
-
 ##      Package Description
 
 This package was built to help reproduce the down-stream analysis results found in several proteomics papers [1-7], and as a wrapper for underlying C/C++ code. The package contains a number of statistical tests to test the enrichment of a network, or clustered network, given a set of node annotated data.
@@ -28,7 +16,7 @@ Where $N$ is taken as the network size, $A$ and $B$ the number of annotations of
 #### One-sided Enrichment
 
 ```math
-\text{p.value$^{enr}_{1.s}$($\mu_{AB}$)} =
+\text{p.value$^{enr}_{1}$($\mu_{AB}$)} =
  \displaystyle\sum^{\mu_{AB}}_{i=0}
   \begin{cases}
     P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{AB}\right)\\
@@ -37,9 +25,26 @@ Where $N$ is taken as the network size, $A$ and $B$ the number of annotations of
 ```
 #### One-Sided Depletion
 
+```math
+\text{p.value$^{dep}_{1}$($\mu_{AB}$)} =
+ \displaystyle\sum^{\mu_{AB}}_{i=0}
+  \begin{cases}
+    P\left( X=i \right)       & P\left(X=i\right) \geq P\left(X=\mu_{AB}\right)\\
+    0                         & P\left(X=i\right) < P\left(X=\mu_{AB}\right)
+  \end{cases}
+```
+
 #### Two-sided Enrichment
 
+```math
+   \text{p.value$^{enr}_{2}$($\mu_{AB}$)} = 2 \times \text{p.value$^{enr}_{1}$($\mu_{AB}$)} 
+```
+
 #### Two-sided Depletion
+
+```math
+   \text{p.value$^{dep}_{2}$($\mu_{AB}$)} = 2 \times \text{p.value$^{dep}_{1}$($\mu_{AB}$)} 
+```
 
 ### Clustered Network Enrichment given one annotation set
 
