@@ -216,7 +216,7 @@ We first construct the $2\times2$ contingency table:
 
 |                    |                    |                |                |                |                |
 | ------------------ | ------------------ | -------------- | -------------- | -------------- | -------------- |
-| $\mu_{ab}$         | $n - \mu_{ab}$     | $n_{a}$        | $n-n_{a}$      | $\mu_{b}$      | $n-n_{b}$      |
+| $\mu_{ab}$         | $n - \mu_{ab}$     | $n_{a}$        | $n-n_{a}$      | $n_{b}$        | $n-n_{b}$      |
 | $N_{AB}-\mu_{ab}$  | $N-N_{AB} - n$     | $A - n_{a}$    | $N-n-n_{a}-A$  | $B-n_{b}$      | $N-n-n_{b}-B$  |
 
 ### Notation
@@ -224,17 +224,19 @@ We first construct the $2\times2$ contingency table:
 ```math
 \begin{cases}
 N  & \text{Number of nodes in the network}\\
-A  & \text{Number of annotation types A}\\
-B  & \text{Number of annotation types B}\\
-\mu_{AB} & \text{Overlap of annotation types A \& B}\\
+A  & \text{Number of annotation types in set $A$}\\
+A[a]  & \text{number of annotation types $a$ in annotation set $A$}\\
+B  & \text{Number of annotation types $B$}\\
+B[b]  & \text{number of annotation types $b$ in annotation set $B$}\\
+\mu_{AB} & \text{Overlap of annotation types $a$ in set $A$ \& annotations types $b$ in set $B$}\\
 C  & \text{Number of annotation types C}\\
 M  & \text{Number of communities}\\
 n  & \text{Number of nodes in a community}\\
 a  & \text{Number of annotation types A in a community}\\
 b  & \text{Number of annotation types B in a community}\\
 c  & \text{Number of annotation types C in a community}\\
-\mu{ab} & \text{}\\
-np & \text{number of permutations}
+\mu_{ab} & \text{Overlap of annotation types $a$ in set $A$ \& annotations types $b$ in set $B$ in a community}\\
+np & \text{number of random permutations}
 \end{cases}
 ```
 
