@@ -72,7 +72,7 @@ Where the 95% Confidence Intervals (CI) are calculated as [9]:
 
 ### False Discovery Rate
 
-Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH): `FDRmeth=\"BY\"`
+Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH): `FDRmeth="BY"`
 
 ### Clustered Network Enrichment given one annotation set
 
@@ -125,7 +125,7 @@ The code will calculate both one- and two-side p-values for enrichment and deple
 ```math
    \text{mean$_{nA}$} = \frac{ n \times A[a]}{N} 
 ```
-Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $n$ the number of nodes in the community.
+<!--Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $n$ the number of nodes in the community.-->
 
 #### Odds Ratio
 
@@ -141,7 +141,7 @@ Where the 95% Confidence Intervals are calculated as [9]:
 
 ### False Discovery Rate
 
-Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH): `FDRmeth=\"BY\"`
+Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH): `FDRmeth="BY"`
 
 
 ### Permuted Clustered Network Enrichment given one annotation set
@@ -154,7 +154,7 @@ We also tested the significance of the overlap between two annotation sets withi
 
 ```math
 P\left(X=\mu_{ab}; \mu_{ab},n_a, n_b, n, A[a],B[b],N \right) =
-\frac{ \binom{A[a] \cap B[b]}{\mu_{ab}} \binom{N-A[a] \cap B[b]}{n-\mu_{ab}} \binom{A[a]}{a} \binom{N-A[a]}{n-a} \binom{B[b]}{b} \binom{N-B[b]}{n-b} } {3 \binom{N}{n} }
+\frac{ \binom{A[a] \cup B[b]}{\mu_{ab}} \binom{N-A[a] \cup B[b]}{n-\mu_{ab}} \binom{A[a]}{a} \binom{N-A[a]}{n-a} \binom{B[b]}{b} \binom{N-B[b]}{n-b} } {3 \binom{N}{n} }
 ```
 Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$, and $\mu_{ab}$ the number of nodes overlapping between the two annotation sets in a community of size $n$. This is similar in spirit to calculating the probability of the intersection distance between two distributions given in eqn (13) pg 8 in [13]. Where we have set $v1 = v2$, and where we have focused on the population overlap relative to the the size of the community, and overlap found in it.
 
@@ -199,7 +199,7 @@ The code will calculate both one- and two-side p-values for enrichment and deple
 ```math
    \text{mean$_{ab}$} = \frac{ n \times A[a] \cap B[b]}{N} 
 ```
-Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $n$ the number of nodes in the community.
+<!--Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $n$ the number of nodes in the community.-->
 
 #### Odds Ratio
 
@@ -215,7 +215,7 @@ Where the 95% Confidence Intervals are calculated as [9]:
 
 ### False Discovery Rate
 
-Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH).
+Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH): `useFDR="BH"`
 
 
 #### Relative Distance
@@ -224,12 +224,14 @@ As part of the clustered network enrichment given two annotation sets analysis, 
 
 #### $\chi^2$ Distribution
 
-We first construct the $2\times2$ contingency table:
+We first construct the $2\times2$ contingency table (CT):
 
-|                    |                    |                |                |                |                |
-| ------------------ | ------------------ | -------------- | -------------- | -------------- | -------------- |
-| $\mu_{ab}$         | $n - \mu_{ab}$     | $n_{a}$        | $n-n_{a}$      | $n_{b}$        | $n-n_{b}$      |
-| $N_{AB}-\mu_{ab}$  | $N-N_{AB} - n$     | $A - n_{a}$    | $N-n-n_{a}-A$  | $B-n_{b}$      | $N-n-n_{b}-B$  |
+|                            |                          |          |               |        |                |
+| -------------------------- | ------------------------ | -------- | ------------- | ------ | -------------- |
+| $\mu_{ab}$                 | $n - \mu_{ab}$           | $a$      | $n-a$         | $b$    | $n-b$          |
+| $A[a] \cup B[b]-\mu_{ab}$  | $N - A[a] \cup B[b] - n$ | $A - a$  | $N-n-a-A[a]$  | $B-b$  | $N-n-b-B[b]$   |
+
+The $\chi^2$-(chi-squared) test statistic 
 
 ### Notation
 
