@@ -64,9 +64,9 @@ Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $B[b]$
 The hypergeometric distribution was also used to calculate the significance of enrichment a clustered network given an annotation type:
 
 ```math
-P\left(X=\mu_{a}; \mu_{a},A,n ,N \right) = \frac{ \binom{A}{\mu_{a}} \binom{N-A}{n-\mu_{A}} } { \binom{N}{n} }
+P\left(X=\mu_{a}; \mu_{a},A,n ,N \right) = \frac{ \binom{A}{\mu_{a}} \binom{N-A}{n-\mu_{a}} } { \binom{N}{n} }
 ```
-Where $N$ is the total number of genes in the network; $n$ the number of nodes in the community; $A[a]$ the total number of annotation types $a$ in annotation set $A$ in the network, and $\mu{a}$ the number of annotated nodes per community.
+Where $N$ is the total number of genes in the network; $n$ the number of nodes in the community; $A[a]$ the total number of annotation types $a$ in annotation set $A$ in the network, and $\mu_{a}$ the number of annotated nodes per community.
 
 #### One-sided Enrichment
 
@@ -111,12 +111,12 @@ Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $n$ th
 #### Odds Ratio
 
 ```math
-   \text{OR$_{AB}$} = \frac{ (\mu_{a} \times (N-A[a] + \mu_{a} - n) }{ (n - \mu_{a}) \times (A[a] - \mu{a}) } 
+   \text{OR$_{nA}$} = \frac{ (\mu_{a} \times (N-A[a] + \mu_{a} - n) }{ (n - \mu_{a}) \times (A[a] - \mu_{a}) } 
 ```
 
 ### Permuted Clustered Network Enrichment given one annotation set
 
-P-values, $\leq$ 10-2, were tested for their strength of significance (sig), by recording the percentage of P-values found from every community/annotation combination, lower than or equal to the observed P-value, when 1000 random permutations of the annotation labels were made. P-values found with a strength of significance < 1% were considered statistically significant. P-values values were also tested against the more stringent Bonferroni correction at the 0.05 (*), 0.01 (**) and 0.001 (***) significance levels.
+Calculating the enrichment a clustered network given one annotation set is a common occurance, for this reason code is provided to perform a perutation study on those p-values calculated above. For example to test p-values $\leq$ 10-2 for their strength of significance (sig). The permuted clustered network enrichment given one annotation set works by recording the percentage of permutated p-values found from every community/annotation combination, lower than or equal to the observed p-value, when $np$ random permutations (default to 1000 random iteration) of the annotation labels are made. P-values found with a strength of significance < 1% are considered statistically significant. Those p-values values are also tested against the more stringent Bonferroni correction at the 0.05 (*), 0.01 (**) and 0.001 (***) significance levels.
 
 ### Clustered Network Enrichment given two annotation sets
 
@@ -154,7 +154,8 @@ n  & \text{Number of nodes in a community}\\
 a  & \text{Number of annotation types A in a community}\\
 b  & \text{Number of annotation types B in a community}\\
 c  & \text{Number of annotation types C in a community}\\
-\mu{ab} & \text{}
+\mu{ab} & \text{}\\
+np & \text{number of permutations}
 \end{cases}
 ```
 
