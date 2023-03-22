@@ -141,12 +141,14 @@ Calculating the enrichment a clustered network given one annotation set is a com
 
 ### Clustered Network Enrichment given two annotation sets
 
-We also tested the significance of the overlap between two annotation sets within a community, or Bridging region, relative to the annotation set sizes at the network level:
+We also tested the significance of the overlap between two annotation sets within a community relative to the annotation set sizes at the network level:
 
 ```math
-P\left(X=\mu_{ab}; \mu_{ab},n_a, n_b, n, A,B,N \right) =
-\frac{ \binom{n_a}{\mu_{ab}} \binom{n-n_a}{n_b-\mu_{ab}} \binom{A \cap B}{\mu_{ab}}  \binom{N-A \cap B}{n-\mu_{ab}} } { \binom{n}{n_b} \binom{N}{n} }
+P\left(X=\mu_{ab}; \mu_{ab},n_a, n_b, n, A[a],B[b],N \right) =
+\frac{ \binom{n_a}{\mu_{ab}} \binom{n-n_a}{n_b-\mu_{ab}} \binom{A[a] \cap B[b]}{\mu_{ab}}  \binom{N-A[a] \cap B[b]}{n-\mu_{ab}} } { \binom{n}{n_b} \binom{N}{n} }
 ```
+Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$, and $\mu_{ab}$ the number of nodes overlapping between the two annotation sets in a community of size $n$. This is similar in spirit to calculating the probability of the intersection distance between two distributions given in eqn (13) pg 8 A. T. Kalinka, The probability of drawing intersesions: extending the hypergeometric distribution, arXiv:1305.0717v5 (2014). Where we'd set v1 = v2, and where we've focused on the population overlap
+relative to the the size of the community/region, and overlap found in it.
 
 ```math
 \text{P-value($\mu_{ab}$)} =
@@ -157,8 +159,13 @@ P\left(X=\mu_{ab}; \mu_{ab},n_a, n_b, n, A,B,N \right) =
   \end{cases}
 ```
 
-Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$ , and $\mu_{ab}$ the number of genes overlapping between the two annotation sets in community, or Bridging region, of size $n$. This is similar in spirit to calculating the probability of the intersection distance between two distributions given in eqn (13) pg 8 A. T. Kalinka, The probability of drawing intersesions: extending the hypergeometric distribution, arXiv:1305.0717v5 (2014). Where we'd set v1 = v2, and where we've focused on the population overlap
-relative to the the size of the community/region, and overlap found in it.
+Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$ , and $\mu_{ab}$ the number of genes overlapping between the two annotation sets in community, or Bridging region, of size $n$. This is similar in spirit to calculating the probability of the intersection distance between two distributions given in eqn (13) pg 8 [13], where we have set $v1 = v2$, and where we have focused on the population overlap relative to the the size of the community and overlap found in it. 
+
+#### Relative Distance
+
+As part of the clustered network enrichment given two annotation sets analysis, we provided to use to calculate the probability of the intersection distance between two distributions given in eqn (13) pg 8 [13] `relDist=TRUE`.
+
+#### $\chi^2$ Distribution
 
 ### Notation
 
