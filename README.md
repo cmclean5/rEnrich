@@ -49,14 +49,14 @@ Where $N$ is taken as the network size, $A[a]$ and $B[b]$ the number of annotati
 #### Hypergeometric mean
 
 ```math
-   \text{mean_{AB}} = \frac{A[a] \times B[b]}{N} 
+   \text{mean$_{AB}$} = \frac{A[a] \times B[b]}{N} 
 ```
 Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $B[b]$ is the number of annotation types $b$ in annotation set $B$.
 
 #### Odds Ratio
 
 ```math
-   \text{OR_{AB}} = \frac{ (\mu_{AB} \times (N-A[a] + \mu_{AB} - B[b]) }{ (B[b] - \mu_{AB}) \times (A[a] - \mu{AB}) } 
+   \text{OR$_{AB}$} = \frac{ (\mu_{AB} \times (N-A[a] + \mu_{AB} - B[b]) }{ (B[b] - \mu_{AB}) \times (A[a] - \mu{AB}) } 
 ```
 
 ### Clustered Network Enrichment given one annotation set
@@ -104,14 +104,14 @@ Where $N$ is the total number of genes in the network; $n$ the number of nodes i
 #### Hypergeometric mean
 
 ```math
-   \text{mean_{nA}} = \frac{ n \times A[a]}{N} 
+   \text{mean$_{nA}$} = \frac{ n \times A[a]}{N} 
 ```
 Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $n$ the number of nodes in the community.
 
 #### Odds Ratio
 
 ```math
-   \text{OR_{AB}} = \frac{ (\mu_{a} \times (N-A[a] + \mu_{a} - n) }{ (n - \mu_{a}) \times (A[a] - \mu{a}) } 
+   \text{OR$_{AB}$} = \frac{ (\mu_{a} \times (N-A[a] + \mu_{a} - n) }{ (n - \mu_{a}) \times (A[a] - \mu{a}) } 
 ```
 
 ### Permuted Clustered Network Enrichment given one annotation set
