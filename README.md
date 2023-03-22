@@ -70,7 +70,7 @@ Where the 95% Confidence Intervals (CI) are calculated as [9]:
 \text{95\% CI} = \log(\text{OR$_{AB}$}) \pm 1.96 \times \left(\frac{1}{\mu_{AB}} + \frac{1}{(B[b]-\mu_{AB})} + \frac{1}{(A[a]-\mu_{AB})} + \frac{1}{(N-A[a]-\mu_{AB}-B[b])} \right)^{1/2}
 ```
 
-### False Discovery Rate
+#### False Discovery Rate
 
 Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH): `FDRmeth="BY"`
 
@@ -139,7 +139,7 @@ Where the 95% Confidence Intervals are calculated as [9]:
 \text{95\% CI} = \log(\text{OR$_{nA}$}) \pm 1.96 \times \left(\frac{1}{\mu_{a}} + \frac{1}{(n-\mu_{a})} + \frac{1}{(A[a]-\mu_{a})} + \frac{1}{(N-A[a]-\mu_{a}-n)} \right)^{1/2}
 ```
 
-### False Discovery Rate
+#### False Discovery Rate
 
 Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH): `FDRmeth="BY"`
 
@@ -213,24 +213,24 @@ Where the 95% Confidence Intervals are calculated as [9]:
 \text{95\% CI} = \log(\text{OR$_{ab}$}) \pm 1.96 \times \left(\frac{1}{\mu_{ab}} + \frac{1}{(n-\mu_{ab})} + \frac{1}{(A[a] \cup B[b]-\mu_{ab})} + \frac{1}{(N-A[a] \cup B[b]-\mu_{ab}-n)} \right)^{1/2}
 ```
 
-### False Discovery Rate
+#### False Discovery Rate
 
 Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH): `useFDR="BH"`
 
 
 #### Relative Distance
 
-As part of the clustered network enrichment given two annotation sets analysis, we provided to use to calculate the probability of the intersection distance between two distributions given in eqn (13) pg 8 [13] `relDist=TRUE`.
+As part of the clustered network enrichment given two annotation set analysis, we provided code to calculate the probability of the intersection distance between two distributions given in eqn (13) pg 8 [13]: `relDist=TRUE`. Calculating the relative distance maybe of interest in biological terms, to answer the question whether we have strong enrichment and depletion in a pair of observations, i.e. the $\mu_{ab}$ found in a community.
 
 #### $\chi^2$ Distribution
 
-We first construct the $2\times2$ contingency table (CT):
+We first construct the $2\times6$ contingency table (CT):
 
-|                            |                                    |              |                |            |                |         |
-| -------------------------- | ---------------------------------- | ------------ | -------------- | ---------- | -------------- | ------- |
-| $\mu_{ab}$                 | $n - \mu_{ab}$                     | $n_a$        | $n-n_a$        | $n_b$      | $n-n_b$        | $3n$    |
-| $A[a] \cup B[b]-\mu_{ab}$  | $N - A[a] \cup B[b] + \mu_{ab}- n$ | $A[a] - n_a$ | $N-n-n_a-A[a]$ | $B[b]-n_b$ | $N-n-n_b-B[b]$ | $3(N-n)$|
-| $A[a] \cup B[b]$           | $N-A[a] \cup B[b]$                 | $A$          | $N-A[a]$       | $B[b]$     | $N-B[b]$       | $3N$    |
+|     |  1                         |  2                                 |  3           |  4             |  5         |  6             |         |
+| --- | -------------------------- | ---------------------------------- | ------------ | -------------- | ---------- | -------------- | ------- |
+| 1   | $\mu_{ab}$                 | $n - \mu_{ab}$                     | $n_a$        | $n-n_a$        | $n_b$      | $n-n_b$        | $3n$    |
+| 2   | $A[a] \cup B[b]-\mu_{ab}$  | $N - A[a] \cup B[b] + \mu_{ab}- n$ | $A[a] - n_a$ | $N-n-n_a-A[a]$ | $B[b]-n_b$ | $N-n-n_b-B[b]$ | $3(N-n)$|
+|     | $A[a] \cup B[b]$           | $N-A[a] \cup B[b]$                 | $A$          | $N-A[a]$       | $B[b]$     | $N-B[b]$       | $3N$    |
 
 The $\chi^2$-(chi-squared) test statistic is then:
 
@@ -238,8 +238,32 @@ The $\chi^2$-(chi-squared) test statistic is then:
 \chi^2 = \displaystyle\sum^{Nr}_{i=0} \displaystyle\sum^{Nc}_{j=0} 
 \frac{(O_{ij} - E_{ij})^2}{E_{ij}}
 ```
-Where $O_{ij}$ is the observed entry in the contingency table (CT), and $E_{ij}$ the expected value in CT given by: $E_{ij} = \frac{\sum_{i} O_{i.} \sum_{j} O_{.j}}{\sum_{ij} O_{ij}}$.
+Where $O_{ij}$ is the observed entry in the contingency table (CT), and $E_{ij}$ the expected value in CT given by: $E_{ij} = \frac{\sum_{i} O_{i.} \sum_{j} O_{.j}}{\sum_{ij} O_{ij}}$. The GSL library [15] was then used to calculate a p-value from a $\chi^2$-distribution with $\nu=(Nr-1)\times(Nc-1)$ degrees of freedom:
 
+```c
+//cdf lower tail
+pvalue = gsl_cdf_chisq_Q(X,mu);
+```
+
+### Network Enrichment given three annotation sets 
+
+We also provide code to calculate the probability of overlap, at the network level, given three annotations sets, see eqn 4 in [13]:
+
+```math
+P\left(X=\mu_{ABC}; \mu_{ABC},A[a],B[b], C[c], N \right) = 
+\frac{ 
+\binom{A[a]}{\mu_{ABC}} \sum_{i} 
+\binom{A[a]-\mu_{ABC}}{i}
+\binom{N-A[a]}{B[b]-\mu_{ABC}-i}
+\binom{N-\mu_{ABC}-i}{C[c]-\mu_{ABC}}
+}
+{ 
+\binom{N}{B[b]}
+\binom{N}{C[c]}
+}
+```
+
+Where $N$ is taken as the network size, $A[a]$, $B[b]$ and $C[c]$ the number of annotations of types $a$, $b$ and $c$ in annotation sets $A$, $B$ and $C$ respectively, and $\mu_{ABC}$ the number of genes (i.e. network nodes) overlapping between the three annotations sets.
 
 
 ### Notation
@@ -252,14 +276,21 @@ A[a]  & \text{number of annotation types $a$ in annotation set $A$}\\
 B  & \text{Number of annotation types $B$}\\
 B[b]  & \text{number of annotation types $b$ in annotation set $B$}\\
 \mu_{AB} & \text{Overlap of annotation types $a$ in set $A$ \& annotations types $b$ in set $B$}\\
-C  & \text{Number of annotation types C}\\
+C[c]  & \text{Number of annotation types $c$ in annotation set $C$}\\
 M  & \text{Number of communities}\\
 n  & \text{Number of nodes in a community}\\
 n_a  & \text{Number of annotation types $a$ in a community}\\
 n_b  & \text{Number of annotation types $b$ in a community}\\
-n_c  & \text{Number of annotation types $c$ in a community}\\
 \mu_{ab} & \text{Overlap of annotation types $a$ in set $A$ \& annotations types $b$ in set $B$ in a community}\\
 np & \text{number of random permutations}
+\end{cases}
+```
+
+### Options
+
+```math
+\begin{cases}
+setNOP & \text{number of random permutations}
 \end{cases}
 ```
 
