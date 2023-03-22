@@ -185,7 +185,7 @@ Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$, and $\
 #### Hypergeometric mean
 
 ```math
-   \text{mean$_{ab}$} = \frac{ n \times \binom{A[a] \cap B[b]}{N} 
+   \text{mean$_{ab}$} = \frac{ n \times A[a] \cap B[b]}{N} 
 ```
 Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $n$ the number of nodes in the community.
 
@@ -214,7 +214,10 @@ As part of the clustered network enrichment given two annotation sets analysis, 
 
 We first construct the $2\times2$ contingency table:
 
-
+|               |                |
+| ------------- | -------------- |
+| $\mu_{ab}$    | $n - \mu_{ab}$ |
+| $N_{AB}-\mu_{ab}$  | $N-N_{AB} - n$ |
 
 ### Notation
 
