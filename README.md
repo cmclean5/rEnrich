@@ -14,41 +14,32 @@ Copyright (C) 2016 Colin Mclean
 
 ##      Package Description
 
-This package was built to help reproduce the down-stream analysis results found in several proteomics papers [1-7], and as a wrapper for underlying C/C++ code. The package contains a number of statistical tests of the enrichment of a network, or clustered network, given a set of annotation data.
+This package was built to help reproduce the down-stream analysis results found in several proteomics papers [1-7], and as a wrapper for underlying C/C++ code. The package contains a number of statistical tests to test the enrichment of a network, or clustered network, given a set of node annotated data.
 
 ### Network Enrichment given two annotation sets 
 
-Initally, the package was constructed to calculate the probability of gene intersection between two annotation sets, at the network level, using hypergeometric distribution (Pocklington et al., 2006):
+Initally the package was constructed to calculate the probability of gene intersection between two annotation sets, at the network level, using hypergeometric distribution (Pocklington et al., 2006):
 
 ```math
 P\left(X=\mu_{AB}; \mu_{AB},A,B,N \right) = \frac{ \binom{A}{\mu_{AB}} \binom{N-A}{B-\mu_{AB}} } { \binom{N}{B} }
 ```
 Where $N$ is taken as the network size, $A$ and $B$ the number of annotations of types $a$ and $b$ respectively, and $\mu_{AB}$ the number of genes (i.e. network nodes) overlapping between the two annotations sets.
 
-| P-value       | Description          | Definition  |
-| ------------- |:--------------------:| -----------:| 
-| p.value       | One-Sided Enrichment | $$\text{P-value(\mu_{AB})} \=
- \displaystyle\sum^{\mu_{AB}}_{i\=0}
-  \begin{cases}
-    P\left( X\=i \right)       & P\left(X\=i\right) \leq P\left(X\=\mu_{AB}\right)\\
-    0                         & P\left(X\=i\right) > P\left(X\=\mu_{AB}\right)
-  \end{cases}$$  |
-
-### One-sided Enrichment
+#### One-sided Enrichment
 
 ```math
-\text{P-value($\mu_{AB}$)} =
+\text{p.value$^{enr}_{1.s}$($\mu_{AB}$)} =
  \displaystyle\sum^{\mu_{AB}}_{i=0}
   \begin{cases}
     P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{AB}\right)\\
     0                         & P\left(X=i\right) > P\left(X=\mu_{AB}\right)
   \end{cases}
 ```
-### One-Sided Depletion
+#### One-Sided Depletion
 
-### Two-sided Enrichment
+#### Two-sided Enrichment
 
-### Two-sided Depletion
+#### Two-sided Depletion
 
 ### Clustered Network Enrichment given one annotation set
 
@@ -60,13 +51,12 @@ P\left(X=\mu_{a}; \mu_{a},A,C_N ,N \right) = \frac{ \binom{A}{\mu_{a}} \binom{N-
 Where $N$ is the total number of genes in the network; $C_n$ the number of genes in the community; $A$ the total number of functional annotated genes in the network, and $mu{a}$ the number of functional annotated genes per community.
 
 ```math
-\[  \text{P-value($\mu_{a}$)} =
+ \text{P-value($\mu_{a}$)} =
  \displaystyle\sum^{\mu_{a}}_{i=0}
   \begin{cases}
     P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{a}\right)\\
     0                         & P\left(X=i\right) > P\left(X=\mu_{a}\right)
   \end{cases}
-\]
 ```
 
 P-values, $\leq$ 10-2, were tested for their strength of significance (sig), by recording the percentage of P-values found from every community/annotation combination, lower than or equal to the observed P-value, when 1000 random permutations of the annotation labels were made. P-values found with a strength of significance < 1% were considered statistically significant. P-values values were also tested against the more stringent Bonferroni correction at the 0.05 (*), 0.01 (**) and 0.001 (***) significance levels.
@@ -249,52 +239,6 @@ EXAMPLE 6:
 To get the clusteral enrichment overlaps for algorithms: 'Spectral', 'infomap' and 'sgG5' for disease and synaptic functional groups on the presynaptic network, we would then run:
 
 > ./submitOverlapEnrch.sh
-
-# rEnrich
-Test enrichment of network clusters given node annotation data
-
-
-## Compile & GSL environment variables setup
-
-
-1) Install GSL:
-
-1.1) Using mac can run: > brew install gsl
-
-2) Set environment variables (replacing your GSL path in GSL_HOME):
-
-2.1) in .bashrc:    
-      
-      export GSL_HOME="/opt/homebrew/Cellar/gsl/2.7.1"
-      
-      export GSL_CFLAGS="${GSL_HOME}/include"
-      
-      export GSL_LIBS="${GSL_HOME}/lib"
-      
-      export GSL_CONFIG="${GSL_HOME}/bin/gsl-config"
-      
-      export PATH="${GSL_HOME}/bin:${PATH}"
-      
-      export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GSL_HOME}/lib"
-
-3) Run autoconfig.ac:
-
-3.1) > autoconf
-
-4) Build and install:
-
-4.1) > R CMD build rEnrich
-
-4.2) > R CMD INSTALL rEnrich_1.0.tar.gz
-
-5) Run example:
-
-5.1) > cd rEnrich/example/
-
-5.2) > R
-
-5.3) > source('example.R')
-
 
 ##      GNU General Public Licenses v3 
 
