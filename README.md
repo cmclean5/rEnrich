@@ -214,10 +214,9 @@ As part of the clustered network enrichment given two annotation sets analysis, 
 
 We first construct the $2\times2$ contingency table:
 
-|               |                |
-| ------------- | -------------- |
-| $\mu_{ab}$    | $n - \mu_{ab}$ |
-| $N_{AB}-\mu_{ab}$  | $N-N_{AB} - n$ |
+| ------------------ | ------------------ | -------------- | -------------- | -------------- | -------------- |
+| $\mu_{ab}$         | $n - \mu_{ab}$     | $n_{a}$        | $n-n_{a}$      | $\mu_{b}$      | $n-n_{b}$      |
+| $N_{AB}-\mu_{ab}$  | $N-N_{AB} - n$     | $A - n_{a}$    | $N-n-n_{a}-A$  | $B-n_{b}$      | $N-n-n_{b}-B$  |
 
 ### Notation
 
