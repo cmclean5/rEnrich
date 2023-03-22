@@ -116,7 +116,7 @@ Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $n$ th
 
 ### Permuted Clustered Network Enrichment given one annotation set
 
-Calculating the enrichment a clustered network given one annotation set is a common occurance, for this reason code is provided to perform a perutation study on those p-values calculated above. For example to test p-values $\leq$ 10-2 for their strength of significance (sig). The permuted clustered network enrichment given one annotation set works by recording the percentage of permutated p-values found from every community/annotation combination, lower than or equal to the observed p-value, when $np$ random permutations (default to 1000 random iteration) of the annotation labels are made. P-values found with a strength of significance < 1% are considered statistically significant. Those p-values values are also tested against the more stringent Bonferroni correction at the 0.05 (*), 0.01 (**) and 0.001 (***) significance levels.
+Calculating the enrichment a clustered network given one annotation set is a common occurance, for this reason code is provided to perform a perutation study on those p-values calculated above. For example to test p-values $\leq$ 10-2 for their strength of significance (sig). The permuted clustered network enrichment given one annotation set works by recording the percentage of permutated p-values found from every community/annotation combination, lower than or equal to the observed p-value, when $np$ random permutations (default to 1000 random iteration) of the annotation labels are made. P-values found with a strength of significance < 1% are considered statistically significant. Those p-values values are also tested against the more stringent Bonferroni correction at the 0.05 (\*), 0.01 (\*\*) and 0.001 (\*\*\*) significance levels.
 
 ### Clustered Network Enrichment given two annotation sets
 
@@ -128,13 +128,12 @@ P\left(X=\mu_{ab}; \mu_{ab},n_a, n_b, n, A,B,N \right) =
 ```
 
 ```math
-\[  \text{P-value($\mu_{ab}$)} =
+\text{P-value($\mu_{ab}$)} =
  \displaystyle\sum^{\mu_{ab}}_{i=0}
   \begin{cases}
     P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{ab}\right)\\
     0                         & P\left(X=i\right) > P\left(X=\mu_{ab}\right)
   \end{cases}
-\]
 ```
 
 Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$ , and $\mu_{ab}$ the number of genes overlapping between the two annotation sets in community, or Bridging region, of size $n$. This is similar in spirit to calculating the probability of the intersection distance between two distributions given in eqn (13) pg 8 A. T. Kalinka, The probability of drawing intersesions: extending the hypergeometric distribution, arXiv:1305.0717v5 (2014). Where we'd set v1 = v2, and where we've focused on the population overlap
