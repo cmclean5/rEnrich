@@ -62,8 +62,12 @@ Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $B[b]$
 Where the 95% Confidence Intervals are calculated as [9]:
 
 ```math
-\text{lower 95\% CI} = \log(\text{OR$_{AB}$}) \pm 1.96 \times \left(\frac{1}{\mu_{AB}} + \frac{1}{(B[b]-\mu_{AB})} + \frac{1}{(A[a]-\mu_{AB})} + \frac{1}{(N-A[a]-\mu_{AB}-B[b])} \right)^{1/2}
+\text{95\% CI} = \log(\text{OR$_{AB}$}) \pm 1.96 \times \left(\frac{1}{\mu_{AB}} + \frac{1}{(B[b]-\mu_{AB})} + \frac{1}{(A[a]-\mu_{AB})} + \frac{1}{(N-A[a]-\mu_{AB}-B[b])} \right)^{1/2}
 ```
+
+### False Discovery Rate
+
+Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH).
 
 ### Clustered Network Enrichment given one annotation set
 
@@ -119,6 +123,17 @@ Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $n$ th
 ```math
    \text{OR$_{nA}$} = \frac{ (\mu_{a} \times (N-A[a] + \mu_{a} - n) }{ (n - \mu_{a}) \times (A[a] - \mu_{a}) } 
 ```
+
+Where the 95% Confidence Intervals are calculated as [9]:
+
+```math
+\text{95\% CI} = \log(\text{OR$_{nA}$}) \pm 1.96 \times \left(\frac{1}{\mu_{a}} + \frac{1}{(n-\mu_{a})} + \frac{1}{(A[a]-\mu_{a})} + \frac{1}{(N-A[a]-\mu_{a}-n)} \right)^{1/2}
+```
+
+### False Discovery Rate
+
+Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH).
+
 
 ### Permuted Clustered Network Enrichment given one annotation set
 
@@ -185,16 +200,16 @@ with distributed functionality underlying plasticity and behaviour, MSB, 2, (200
 
 [9] Szumilas, M. Explaining Odds Ratios, J Can Acad Child Adolesc Psychiatry. 2010 Aug; 19(3): 227–229.
 
-[10] Alex T. Kalinka, The probablility of drawing intersections: extending the hypergeometric distribution, arXiv:1305.0717v5, (2014).
-
-[11] Benjamini, Y., and Hochberg, Y. Controlling the false discovery rate:  a practical and powerful approach to multiple testing.
+[10] Benjamini, Y., and Hochberg, Y. Controlling the false discovery rate:  a practical and powerful approach to multiple testing.
 Journal of the Royal Statistical Society Series B 57 (1995), 289–300.
 
-[12] Benjamini, Y., and Liu, W. A step-down multiple hypotheses testing procedure that controls the false discovery rate under independence. Journal of Statistical Planning and Inference 82 (1999), 163–170.
+[11] Benjamini, Y., and Liu, W. A step-down multiple hypotheses testing procedure that controls the false discovery rate under independence. Journal of Statistical Planning and Inference 82 (1999), 163–170.
 
-[13] Benjamini, Y., and Yekutieli, D. (2001). The control of the false discovery rate in multiple testing under dependency. Annals of Statistics, 29, 1165-1188.
+[12] Benjamini, Y., and Yekutieli, D. (2001). The control of the false discovery rate in multiple testing under dependency. Annals of Statistics, 29, 1165-1188.
 
-[14] M. Galassi et al, GNU Scientific Library Reference Manual (3rd Ed.), ISBN 0954612078.
+[13] Alex T. Kalinka, The probablility of drawing intersections: extending the hypergeometric distribution, arXiv:1305.0717v5, (2014).
+
+[15] M. Galassi et al, GNU Scientific Library Reference Manual (3rd Ed.), ISBN 0954612078.
 
 ### TO INSTALL AND BUILD
 
