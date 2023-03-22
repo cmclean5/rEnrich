@@ -2,7 +2,7 @@
 
 ##      Package Description
 
-This package was built to help reproduce the down-stream analysis results found in several proteomics papers [1-7], and as a wrapper for underlying C/C++ code. The package contains a number of statistical tests to test the enrichment of a network, or clustered network, given a set of node annotated data.
+This package was built to wrap underlying C/C++ code used in the down-stream analysis results found in several proteomics papers [1-7]. The package contains a number of statistical tests to test the enrichment of a network, or clustered network, given a set of node annotated data.
 
 ### Network Enrichment given two annotation sets 
 
@@ -23,6 +23,7 @@ Where $N$ is taken as the network size, $A[a]$ and $B[b]$ the number of annotati
     0                         & P\left(X=i\right) > P\left(X=\mu_{AB}\right)
   \end{cases}
 ```
+
 #### One-Sided Depletion
 
 ```math
@@ -46,12 +47,16 @@ Where $N$ is taken as the network size, $A[a]$ and $B[b]$ the number of annotati
    \text{p.value$^{dep}_{2}$($\mu_{AB}$)} = 2 \times \text{p.value$^{dep}_{1}$($\mu_{AB}$)} 
 ```
 
+#### P-values
+
+The code will calculate both one- and two-side p-values for enrichment and depletion. By default the two-sided p-values for enrichment and depletion are returned to the user: `useTwoSided=1` and `useOneSided=0`.         
+
 #### Hypergeometric mean
 
 ```math
    \text{mean$_{AB}$} = \frac{A[a] \times B[b]}{N} 
 ```
-Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $B[b]$ is the number of annotation types $b$ in annotation set $B$.
+<!--Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $B[b]$ is the number of annotation types $b$ in annotation set $B$.-->
 
 #### Odds Ratio
 
@@ -59,7 +64,7 @@ Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $B[b]$
    \text{OR$_{AB}$} = \frac{ (\mu_{AB} \times (N-A[a] + \mu_{AB} - B[b]) }{ (B[b] - \mu_{AB}) \times (A[a] - \mu{AB}) } 
 ```
 
-Where the 95% Confidence Intervals are calculated as [9]:
+Where the 95% Confidence Intervals (CI) are calculated as [9]:
 
 ```math
 \text{95\% CI} = \log(\text{OR$_{AB}$}) \pm 1.96 \times \left(\frac{1}{\mu_{AB}} + \frac{1}{(B[b]-\mu_{AB})} + \frac{1}{(A[a]-\mu_{AB})} + \frac{1}{(N-A[a]-\mu_{AB}-B[b])} \right)^{1/2}
@@ -67,7 +72,7 @@ Where the 95% Confidence Intervals are calculated as [9]:
 
 ### False Discovery Rate
 
-Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH).
+Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH): `FDRmeth=\"BY\"`
 
 ### Clustered Network Enrichment given one annotation set
 
@@ -111,6 +116,10 @@ Where $N$ is the total number of genes in the network; $n$ the number of nodes i
    \text{p.value$^{dep}_{2}$($\mu_{a}$)} = 2 \times \text{p.value$^{dep}_{1}$($\mu_{a}$)} 
 ```
 
+#### P-values
+
+The code will calculate both one- and two-side p-values for enrichment and depletion. By default the two-sided p-values for enrichment and depletion are returned to the user: `useTwoSided=1` and `useOneSided=0`.    
+
 #### Hypergeometric mean
 
 ```math
@@ -132,12 +141,12 @@ Where the 95% Confidence Intervals are calculated as [9]:
 
 ### False Discovery Rate
 
-Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH).
+Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH): `FDRmeth=\"BY\"`
 
 
 ### Permuted Clustered Network Enrichment given one annotation set
 
-Calculating the enrichment a clustered network given one annotation set is a common occurance, for this reason code is provided to perform a perutation study on those p-values calculated above. For example to test p-values $\leq$ 10-2 for their strength of significance (sig). The permuted clustered network enrichment given one annotation set works by recording the percentage of permutated p-values found from every community/annotation combination, lower than or equal to the observed p-value, when $np$ random permutations ($np$ default to 1000 random iteration) of the annotation labels are made. P-values found with a strength of significance < 1% are considered statistically significant. Those p-values values are also tested against the more stringent Bonferroni correction at the 0.05 (\*), 0.01 (\*\*) and 0.001 (\*\*\*) significance levels.
+It's common to calculate the p-values for enrichment of a clustered network given one annotation set. For this reason we provide code to perform a permutation study on such calculated p-values. For example to test those p-values $\leq$ 10-2 for their strength of significance (sig). Our permution study works by recording the percentage of permutated p-values found from every community/annotation combination, lower than or equal to the observed p-value, when $np$ random permutations ($np$ default to 1000 random iteration) of the annotation labels are made. A pseudocount of 1 was added to avoid permutated p-values of zero. P-values found with a strength of significance < 1% are considered statistically significant. Those p-values values are also tested against the more stringent Bonferroni correction at the 0.05 (\*), 0.01 (\*\*) and 0.001 (\*\*\*) significance levels. The default options for the permutation study code is: `runPerm=FALSE`, `setNOP=1000` and `pseudoCount=1.0`.
 
 ### Clustered Network Enrichment given two annotation sets
 
@@ -145,9 +154,9 @@ We also tested the significance of the overlap between two annotation sets withi
 
 ```math
 P\left(X=\mu_{ab}; \mu_{ab},n_a, n_b, n, A[a],B[b],N \right) =
-\frac{ \binom{n_a}{\mu_{ab}} \binom{n-n_a}{n_b-\mu_{ab}} \binom{A[a] \cap B[b]}{\mu_{ab}}  \binom{N-A[a] \cap B[b]}{n-\mu_{ab}} } { \binom{n}{n_b} \binom{N}{n} }
+\frac{ \binom{A[a] \cap B[b]}{\mu_{ab}} \binom{N-A[a] \cap B[b]}{n-\mu_{ab}} \binom{A[a]}{a} \binom{N-A[a]}{n-a} \binom{B[b]}{b} \binom{N-B[b]}{n-b} } {3 \binom{N}{n} }
 ```
-Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$, and $\mu_{ab}$ the number of nodes overlapping between the two annotation sets in a community of size $n$. This is similar in spirit to calculating the probability of the intersection distance between two distributions given in eqn (13) pg 8 A. T. Kalinka, The probability of drawing intersesions: extending the hypergeometric distribution, arXiv:1305.0717v5 (2014). Where we have set $v1 = v2$, and where we have focused on the population overlap relative to the the size of the community, and overlap found in it.
+Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$, and $\mu_{ab}$ the number of nodes overlapping between the two annotation sets in a community of size $n$. This is similar in spirit to calculating the probability of the intersection distance between two distributions given in eqn (13) pg 8 in [13]. Where we have set $v1 = v2$, and where we have focused on the population overlap relative to the the size of the community, and overlap found in it.
 
 #### One-sided Enrichment
 
@@ -181,6 +190,9 @@ Where $n_a$ and $n_b$ are the number of annotations of types $a$ and $b$, and $\
 ```math
    \text{p.value$^{dep}_{2}$($\mu_{ab}$)} = 2 \times \text{p.value$^{dep}_{1}$($\mu_{ab}$)} 
 ```
+#### P-values
+
+The code will calculate both one- and two-side p-values for enrichment and depletion. By default the two-sided p-values for enrichment and depletion are returned to the user: `useTwoSided=1` and `useOneSided=0`. 
 
 #### Hypergeometric mean
 
