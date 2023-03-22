@@ -212,6 +212,10 @@ As part of the clustered network enrichment given two annotation sets analysis, 
 
 #### $\chi^2$ Distribution
 
+We first construct the $2\times2$ contingency table:
+
+
+
 ### Notation
 
 ```math
