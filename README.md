@@ -306,7 +306,7 @@ The code will calculate both one- and two-side p-values for enrichment and deple
 #### Hypergeometric mean
 
 ```math
-   \text{mean$_{AB}$} = \frac{A[a] \times B[b] \times C[c]}{N^2} 
+   \text{mean$_{ABC}$} = \frac{A[a] \times B[b] \times C[c]}{N^2} 
 ```
 
 #### False Discovery Rate
@@ -324,6 +324,7 @@ B  & \text{Number of annotation types $B$}\\
 B[b]  & \text{number of annotation types $b$ in annotation set $B$}\\
 \mu_{AB} & \text{Overlap of annotation types $a$ in set $A$ \& annotations types $b$ in set $B$}\\
 C[c]  & \text{Number of annotation types $c$ in annotation set $C$}\\
+\mu_{ABC} & \text{Overlap of annotation types $a$ in set $A$, annotations types $b$ in set $B$, and annotations types $c$ in set $C$}\\
 M  & \text{Number of communities}\\
 n  & \text{Number of nodes in a community}\\
 n_a  & \text{Number of annotation types $a$ in a community}\\
