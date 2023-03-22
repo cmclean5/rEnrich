@@ -6,12 +6,12 @@ This package was built to help reproduce the down-stream analysis results found 
 
 ### Network Enrichment given two annotation sets 
 
-Initally the package was constructed to calculate the probability of gene intersection between two annotation sets, at the network level, using hypergeometric distribution (Pocklington et al., 2006):
+Initally the package was constructed to calculate the probability of gene intersection between two annotation sets, at the network level, using hypergeometric distribution [8]:
 
 ```math
-P\left(X=\mu_{AB}; \mu_{AB},A,B,N \right) = \frac{ \binom{A}{\mu_{AB}} \binom{N-A}{B-\mu_{AB}} } { \binom{N}{B} }
+P\left(X=\mu_{AB}; \mu_{AB},A[a],B[b],N \right) = \frac{ \binom{A[a]}{\mu_{AB}} \binom{N-A[a]}{B[b]-\mu_{AB}} } { \binom{N}{B[b]} }
 ```
-Where $N$ is taken as the network size, $A$ and $B$ the number of annotations of types $a$ and $b$ respectively, and $\mu_{AB}$ the number of genes (i.e. network nodes) overlapping between the two annotations sets.
+Where $N$ is taken as the network size, $A[a]$ and $B[b]$ the number of annotations of types $a$ and $b$ in annotation sets $A$ and $B$ respectively, and $\mu_{AB}$ the number of genes (i.e. network nodes) overlapping between the two annotations sets.
 
 #### One-sided Enrichment
 
@@ -46,23 +46,75 @@ Where $N$ is taken as the network size, $A$ and $B$ the number of annotations of
    \text{p.value$^{dep}_{2}$($\mu_{AB}$)} = 2 \times \text{p.value$^{dep}_{1}$($\mu_{AB}$)} 
 ```
 
+#### Hypergeometric mean
+
+```math
+   \text{mean_{AB}} = \frac{A[a] \times B[b]}{N} 
+```
+Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $B[b]$ is the number of annotation types $b$ in annotation set $B$.
+
+#### Odds Ratio
+
+```math
+   \text{OR_{AB}} = \frac{ (\mu_{AB} \times (N-A[a] + \mu_{AB} - B[b]) }{ (B[b] - \mu_{AB}) \times (A[a] - \mu{AB}) } 
+```
+
 ### Clustered Network Enrichment given one annotation set
 
 The hypergeometric distribution was also used to calculate the significance of enrichment a clustered network given an annotation type:
 
 ```math
-P\left(X=\mu_{a}; \mu_{a},A,C_N ,N \right) = \frac{ \binom{A}{\mu_{a}} \binom{N-A}{C_N-\mu_{A}} } { \binom{N}{C_N} }
+P\left(X=\mu_{a}; \mu_{a},A,n ,N \right) = \frac{ \binom{A}{\mu_{a}} \binom{N-A}{n-\mu_{A}} } { \binom{N}{n} }
 ```
-Where $N$ is the total number of genes in the network; $C_n$ the number of genes in the community; $A$ the total number of functional annotated genes in the network, and $mu{a}$ the number of functional annotated genes per community.
+Where $N$ is the total number of genes in the network; $n$ the number of nodes in the community; $A[a]$ the total number of annotation types $a$ in annotation set $A$ in the network, and $\mu{a}$ the number of annotated nodes per community.
+
+#### One-sided Enrichment
 
 ```math
- \text{P-value($\mu_{a}$)} =
+\text{p.value$^{enr}_{1}$($\mu_{a}$)} =
  \displaystyle\sum^{\mu_{a}}_{i=0}
   \begin{cases}
     P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{a}\right)\\
     0                         & P\left(X=i\right) > P\left(X=\mu_{a}\right)
   \end{cases}
 ```
+#### One-Sided Depletion
+
+```math
+\text{p.value$^{dep}_{1}$($\mu_{a}$)} =
+ \displaystyle\sum^{\mu_{a}}_{i=0}
+  \begin{cases}
+    P\left( X=i \right)       & P\left(X=i\right) \geq P\left(X=\mu_{a}\right)\\
+    0                         & P\left(X=i\right) < P\left(X=\mu_{a}\right)
+  \end{cases}
+```
+
+#### Two-sided Enrichment
+
+```math
+   \text{p.value$^{enr}_{2}$($\mu_{a}$)} = 2 \times \text{p.value$^{enr}_{1}$($\mu_{a}$)} 
+```
+
+#### Two-sided Depletion
+
+```math
+   \text{p.value$^{dep}_{2}$($\mu_{a}$)} = 2 \times \text{p.value$^{dep}_{1}$($\mu_{a}$)} 
+```
+
+#### Hypergeometric mean
+
+```math
+   \text{mean_{nA}} = \frac{ n \times A[a]}{N} 
+```
+Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $n$ the number of nodes in the community.
+
+#### Odds Ratio
+
+```math
+   \text{OR_{AB}} = \frac{ (\mu_{a} \times (N-A[a] + \mu_{a} - n) }{ (n - \mu_{a}) \times (A[a] - \mu{a}) } 
+```
+
+### Permuted Clustered Network Enrichment given one annotation set
 
 P-values, $\leq$ 10-2, were tested for their strength of significance (sig), by recording the percentage of P-values found from every community/annotation combination, lower than or equal to the observed P-value, when 1000 random permutations of the annotation labels were made. P-values found with a strength of significance < 1% were considered statistically significant. P-values values were also tested against the more stringent Bonferroni correction at the 0.05 (*), 0.01 (**) and 0.001 (***) significance levels.
 
@@ -98,7 +150,7 @@ B  & \text{Number of annotation types B}\\
 \mu_{AB} & \text{Overlap of annotation types A \& B}\\
 C  & \text{Number of annotation types C}\\
 M  & \text{Number of communities}\\
-C_N & \text{Number of nodes in a community}\\
+n  & \text{Number of nodes in a community}\\
 a  & \text{Number of annotation types A in a community}\\
 b  & \text{Number of annotation types B in a community}\\
 c  & \text{Number of annotation types C in a community}\\
@@ -122,20 +174,19 @@ c  & \text{Number of annotation types C in a community}\\
 
 [7] C. Mclean, X. He, I.T Simpson, D.J Armstrong: Improved Functional Enrichment Analysis of Biological Networks using Scalable Modularity Based Clustering, (2016), J Proteomics Bioinformatics, 9:9-18, doi:10.4172/jpb.1000383.
 
-[1] M. Galassi et al, GNU Scientific Library Reference Manual (3rd Ed.), ISBN 0954612078.
-
-[2] Pocklington A, Cumiskey D, Armstrong D, Grant S: The proteomes of neurotransmitter receptor complexes from modular networks
+[8] Pocklington A, Cumiskey D, Armstrong D, Grant S: The proteomes of neurotransmitter receptor complexes from modular networks
 with distributed functionality underlying plasticity and behaviour, MSB, 2, (2006).
 
-[3] Alex T. Kalinka, The probablility of drawing intersections: extending the hypergeometric distribution, arXiv:1305.0717v5, (2014).
+[9] Alex T. Kalinka, The probablility of drawing intersections: extending the hypergeometric distribution, arXiv:1305.0717v5, (2014).
 
-[4] Benjamini, Y., and Hochberg, Y. Controlling the false discovery rate:  a practical and powerful approach to multiple testing.
+[10] Benjamini, Y., and Hochberg, Y. Controlling the false discovery rate:  a practical and powerful approach to multiple testing.
 Journal of the Royal Statistical Society Series B 57 (1995), 289–300.
 
-[5] Benjamini, Y., and Liu, W. A step-down multiple hypotheses testing procedure that controls the false discovery rate under independence. Journal of Statistical Planning and Inference 82 (1999), 163–170.
+[11] Benjamini, Y., and Liu, W. A step-down multiple hypotheses testing procedure that controls the false discovery rate under independence. Journal of Statistical Planning and Inference 82 (1999), 163–170.
 
-[6] Benjamini, Y., and Yekutieli, D. (2001). The control of the false discovery rate in multiple testing under dependency. Annals of Statistics, 29, 1165-1188.
+[12] Benjamini, Y., and Yekutieli, D. (2001). The control of the false discovery rate in multiple testing under dependency. Annals of Statistics, 29, 1165-1188.
 
+[13] M. Galassi et al, GNU Scientific Library Reference Manual (3rd Ed.), ISBN 0954612078.
 
 ### TO INSTALL AND BUILD
 
@@ -201,49 +252,6 @@ EXAMPLE 3:
 To run network level enrichment for disease, synaptic function and cell type annotation sets:  	
 > ./run -opt 4 -Comfile  ../Clustering/PPI_Presynaptic_Published/Spectral_communities_cytoscape.csv -Annofile ../Annotations/flatfile_human_gene2HDO.csv -Annofile ../Annotations/SCH_flatfile.csv -Annofile ../Annotations/celltypes_PMID27991900_L2.csv
 
-EXAMPLE 4:
-
-In addition to the single command line studies above, we also provide the bash scripts 'submitClustEnrch.sh' and 'submitOverlapEnrch.sh', to the enrichment package through various combinations of clustering results, annotation sets and graphs. This is controlled by the parameter files found in the folder '../parameterFiles'.
-
-EXAMPLE 5:
-
-For example, get the cluster enrichment results for algorithms: 'Spectral', 'infomap' and 'sgG5' for disease and synaptic functional groups on the presynaptic network, we would set:
-
-> emacs ../parameterFiles/graphs.csv
-
-1       PPI_Presynaptic
-0       PPI_PSP
-0       PPI_PSP_consensus
-
-> emacs ../parameterFiles/clusteringAlg.csv
-
-0	fc_communities.csv	fc
-0	lourvain_communities.csv	lourvain
-0	lec_communities.csv	lec
-1	Spectral_communities.csv	Spectral
-1	infomap_communities.csv	infomap
-0	sgG1_communities.csv	sgG1
-0	SVI_communities.csv	SVI
-0	wt_communities.csv	wt
-
-> emacs ../parameterFiles/annotations.csv
-
-2	flatfile_human_gene2HDO.csv	topOnto_ovg
-0	flatfile_chua.csv	chua
-1	SCH_flatfile.csv	SCH
-0	flatfile.go.MF.csv	GOMF
-0	flatfile.go.BP.csv	GOBP
-0	flatfile.go.CC.csv	GOCC
-
-Then run:
-
-> ./submitClustEnrch.sh
-
-EXAMPLE 6:
-
-To get the clusteral enrichment overlaps for algorithms: 'Spectral', 'infomap' and 'sgG5' for disease and synaptic functional groups on the presynaptic network, we would then run:
-
-> ./submitOverlapEnrch.sh
 
 ##      GNU General Public Licenses v3 
 
