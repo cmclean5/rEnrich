@@ -238,7 +238,7 @@ The $\chi^2$-(chi-squared) test statistic is then:
 \chi^2 = \displaystyle\sum^{Nr}_{i=0} \displaystyle\sum^{Nc}_{j=0} 
 \frac{(O_{ij} - E_{ij})^2}{E_{ij}}
 ```
-Where $O_{ij}$ is the observed entry in the contingency table, and $E_{ij}$ the expected value given by $ \frac{ \sum_i O_{i.} \times \sum_j O_{.j}} { \sum_{ij} O_{ij}}$ 
+Where $O_{ij}$ is the observed entry in the contingency table, and $E_{ij}$ the expected value given by $ \frac{ \sum_{i} O_{i.} \times \sum_{j} O_{.j} } { \sum_{ij} O_{ij} }$ 
 
 ### Notation
 
