@@ -204,13 +204,13 @@ The code will calculate both one- and two-side p-values for enrichment and deple
 #### Odds Ratio
 
 ```math
-   \text{OR$_{ab}$} = \frac{ (\mu_{a} \times (N- A[a] \cap B[b] + \mu_{ab} - n) }{ (n - \mu_{ab}) \times (A[a] \cap B[b] - \mu_{ab}) } 
+   \text{OR$_{ab}$} = \frac{ (\mu_{a} \times (N- A[a] \cup B[b] + \mu_{ab} - n) }{ (n - \mu_{ab}) \times (A[a] \cup B[b] - \mu_{ab}) } 
 ```
 
 Where the 95% Confidence Intervals are calculated as [9]:
 
 ```math
-\text{95\% CI} = \log(\text{OR$_{ab}$}) \pm 1.96 \times \left(\frac{1}{\mu_{ab}} + \frac{1}{(n-\mu_{ab})} + \frac{1}{(A[a] \cap B[b]-\mu_{ab})} + \frac{1}{(N-A[a] \cap B[b]-\mu_{ab}-n)} \right)^{1/2}
+\text{95\% CI} = \log(\text{OR$_{ab}$}) \pm 1.96 \times \left(\frac{1}{\mu_{ab}} + \frac{1}{(n-\mu_{ab})} + \frac{1}{(A[a] \cup B[b]-\mu_{ab})} + \frac{1}{(N-A[a] \cup B[b]-\mu_{ab}-n)} \right)^{1/2}
 ```
 
 ### False Discovery Rate
@@ -226,11 +226,11 @@ As part of the clustered network enrichment given two annotation sets analysis, 
 
 We first construct the $2\times2$ contingency table (CT):
 
-|                            |                          |              |                |            |                |         |
-| -------------------------- | ------------------------ | ------------ | -------------- | ---------- | -------------- | ------- |
-| $\mu_{ab}$                 | $n - \mu_{ab}$           | $n_a$        | $n-n_a$        | $n_b$      | $n-n_b$        | $3n$    |
-| $A[a] \cup B[b]-\mu_{ab}$  | $N - A[a] \cup B[b] - n$ | $A[a] - n_a$ | $N-n-n_a-A[a]$ | $B[b]-n_b$ | $N-n-n_b-B[b]$ | $3(N-n)$|
-| $A[a] \cup B[b]$           | $N-A[a] \cup B[b]$       | $A$          | $N-A[a]$       | $B[b]$     | $N-B[b]$       | $3N$    |
+|                            |                                    |              |                |            |                |         |
+| -------------------------- | ---------------------------------- | ------------ | -------------- | ---------- | -------------- | ------- |
+| $\mu_{ab}$                 | $n - \mu_{ab}$                     | $n_a$        | $n-n_a$        | $n_b$      | $n-n_b$        | $3n$    |
+| $A[a] \cup B[b]-\mu_{ab}$  | $N - A[a] \cup B[b] + \mu_{ab}- n$ | $A[a] - n_a$ | $N-n-n_a-A[a]$ | $B[b]-n_b$ | $N-n-n_b-B[b]$ | $3(N-n)$|
+| $A[a] \cup B[b]$           | $N-A[a] \cup B[b]$                 | $A$          | $N-A[a]$       | $B[b]$     | $N-B[b]$       | $3N$    |
 
 The $\chi^2$-(chi-squared) test statistic is then:
 
