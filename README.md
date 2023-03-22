@@ -60,7 +60,7 @@ Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $B[b]$
 ```
 
 ```math
-\text{lower 95% CI} = \log(\text{OR$_{AB}$}) - 1.96 * \sqrt( \left(\frac{1}{\mu_{AB}} + \frac{1}{B[b]-\mu_{AB}} + \frac{1}{A[a]-mu_{AB}} + \frac{1}{N-A[a]-\mu_{AB}-B[b]} \right) );
+\text{lower 95\% CI} = \log(\text{OR$_{AB}$}) - 1.96 \times \left(\frac{1}{\mu_{AB}} + \frac{1}{B[b]-\mu_{AB}} + \frac{1}{A[a]-mu_{AB}} + \frac{1}{N-A[a]-\mu_{AB}-B[b]} \right)^{1/2};
 ```
 
 ### Clustered Network Enrichment given one annotation set
