@@ -59,8 +59,10 @@ Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $B[b]$
    \text{OR$_{AB}$} = \frac{ (\mu_{AB} \times (N-A[a] + \mu_{AB} - B[b]) }{ (B[b] - \mu_{AB}) \times (A[a] - \mu{AB}) } 
 ```
 
+Where the 95% Confidence Intervals are calculated as [9]:
+
 ```math
-\text{lower 95\% CI} = \log(\text{OR$_{AB}$}) - 1.96 \times \left(\frac{1}{\mu_{AB}} + \frac{1}{B[b]-\mu_{AB}} + \frac{1}{A[a]-mu_{AB}} + \frac{1}{N-A[a]-\mu_{AB}-B[b]} \right)^{1/2};
+\text{lower 95\% CI} = \log(\text{OR$_{AB}$}) \pm 1.96 \times \left(\frac{1}{\mu_{AB}} + \frac{1}{(B[b]-\mu_{AB})} + \frac{1}{(A[a]-\mu_{AB})} + \frac{1}{(N-A[a]-\mu_{AB}-B[b])} \right)^{1/2}
 ```
 
 ### Clustered Network Enrichment given one annotation set
