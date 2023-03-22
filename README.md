@@ -238,7 +238,7 @@ The $\chi^2$-(chi-squared) test statistic is then:
 \chi^2 = \displaystyle\sum^{Nr}_{i=0} \displaystyle\sum^{Nc}_{j=0} 
 \frac{(O_{ij} - E_{ij})^2}{E_{ij}}
 ```
-Where $O_{ij}$ is the observed entry in the contingency table (CT), and $E_{ij}$ the expected value in CT given by: $E_{ij} = \frac{\sum_{i} O_{i.} \sum_{j} O_{.j}}{\sum_{ij} O_{ij}}$. The GSL library [15] was then used to calculate a p-value from a $\chi^2$-distribution with $\nu=(Nr-1)\times(Nc-1)$ degrees of freedom:
+Where $O_{ij}$ is the observed entry in the contingency table (CT), and $E_{ij}$ the expected value in CT given by: $E_{ij} = \frac{\sum_{i} O_{i.} \sum_{j} O_{.j}}{\sum_{ij} O_{ij}}$. The GSL library [14] was then used to calculate a p-value from a $\chi^2$-distribution with $\nu=(Nr-1)\times(Nc-1)$ degrees of freedom:
 
 ```c
 //cdf lower tail
@@ -265,6 +265,53 @@ P\left(X=\mu_{ABC}; \mu_{ABC},A[a],B[b], C[c], N \right) =
 
 Where $N$ is taken as the network size, $A[a]$, $B[b]$ and $C[c]$ the number of annotations of types $a$, $b$ and $c$ in annotation sets $A$, $B$ and $C$ respectively, and $\mu_{ABC}$ the number of genes (i.e. network nodes) overlapping between the three annotations sets.
 
+#### One-sided Enrichment
+
+```math
+\text{p.value$^{enr}_{1}$($\mu_{ABC}$)} =
+ \displaystyle\sum^{\mu_{ABC}}_{i=0}
+  \begin{cases}
+    P\left( X=i \right)       & P\left(X=i\right) \leq P\left(X=\mu_{ABC}\right)\\
+    0                         & P\left(X=i\right) > P\left(X=\mu_{ABC}\right)
+  \end{cases}
+```
+
+#### One-Sided Depletion
+
+```math
+\text{p.value$^{dep}_{1}$($\mu_{ABC}$)} =
+ \displaystyle\sum^{\mu_{ABC}}_{i=0}
+  \begin{cases}
+    P\left( X=i \right)       & P\left(X=i\right) \geq P\left(X=\mu_{ABC}\right)\\
+    0                         & P\left(X=i\right) < P\left(X=\mu_{ABC}\right)
+  \end{cases}
+```
+
+#### Two-sided Enrichment
+
+```math
+   \text{p.value$^{enr}_{2}$($\mu_{ABC}$)} = 2 \times \text{p.value$^{enr}_{1}$($\mu_{ABC}$)} 
+```
+
+#### Two-sided Depletion
+
+```math
+   \text{p.value$^{dep}_{2}$($\mu_{ABC}$)} = 2 \times \text{p.value$^{dep}_{1}$($\mu_{ABC}$)} 
+```
+
+#### P-values
+
+The code will calculate both one- and two-side p-values for enrichment and depletion. By default the two-sided p-values for enrichment and depletion are returned to the user: `useTwoSided=1` and `useOneSided=0`.         
+
+#### Hypergeometric mean
+
+```math
+   \text{mean$_{AB}$} = \frac{A[a] \times B[b] \times C[c]}{N^2} 
+```
+
+#### False Discovery Rate
+
+Each p-value is corrected for multiple hypothesis testing by selecting one of the following methods: Benjamini and Hochberg FDR (BH) [10], Benjamini and Liu (BL) [11] or Benjamini and Yekutieli (BY) [12]. The default used is (BH): `FDRmeth="BY"`
 
 ### Notation
 
@@ -290,7 +337,7 @@ np & \text{number of random permutations}
 
 ```math
 \begin{cases}
-setNOP & \text{number of random permutations}
+setNOP & = 1000 & \text{number of random permutations}
 \end{cases}
 ```
 
@@ -324,7 +371,7 @@ Journal of the Royal Statistical Society Series B 57 (1995), 289–300.
 
 [13] Alex T. Kalinka, The probablility of drawing intersections: extending the hypergeometric distribution, arXiv:1305.0717v5, (2014).
 
-[15] M. Galassi et al, GNU Scientific Library Reference Manual (3rd Ed.), ISBN 0954612078.
+[14] M. Galassi et al, GNU Scientific Library Reference Manual (3rd Ed.), ISBN 0954612078.
 
 ### TO INSTALL AND BUILD
 
