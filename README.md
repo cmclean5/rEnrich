@@ -59,6 +59,10 @@ Where $A[a]$ is the number of annotation types $a$ in annotation set $A$, $B[b]$
    \text{OR$_{AB}$} = \frac{ (\mu_{AB} \times (N-A[a] + \mu_{AB} - B[b]) }{ (B[b] - \mu_{AB}) \times (A[a] - \mu{AB}) } 
 ```
 
+```math
+\text{lower 95% CI} = \log(\text{OR$_{AB}$}) - 1.96 * \sqrt( \left(\frac{1}{\mu_{AB}} + \frac{1}{B[b]-\mu_{AB}} + \frac{1}{A[a]-mu_{AB}} + \frac{1}{N-A[a]-\mu_{AB}-B[b]} \right) );
+```
+
 ### Clustered Network Enrichment given one annotation set
 
 The hypergeometric distribution was also used to calculate the significance of enrichment a clustered network given an annotation type:
@@ -177,16 +181,18 @@ np & \text{number of permutations}
 [8] Pocklington A, Cumiskey D, Armstrong D, Grant S: The proteomes of neurotransmitter receptor complexes from modular networks
 with distributed functionality underlying plasticity and behaviour, MSB, 2, (2006).
 
-[9] Alex T. Kalinka, The probablility of drawing intersections: extending the hypergeometric distribution, arXiv:1305.0717v5, (2014).
+[9] Szumilas, M. Explaining Odds Ratios, J Can Acad Child Adolesc Psychiatry. 2010 Aug; 19(3): 227–229.
 
-[10] Benjamini, Y., and Hochberg, Y. Controlling the false discovery rate:  a practical and powerful approach to multiple testing.
+[10] Alex T. Kalinka, The probablility of drawing intersections: extending the hypergeometric distribution, arXiv:1305.0717v5, (2014).
+
+[11] Benjamini, Y., and Hochberg, Y. Controlling the false discovery rate:  a practical and powerful approach to multiple testing.
 Journal of the Royal Statistical Society Series B 57 (1995), 289–300.
 
-[11] Benjamini, Y., and Liu, W. A step-down multiple hypotheses testing procedure that controls the false discovery rate under independence. Journal of Statistical Planning and Inference 82 (1999), 163–170.
+[12] Benjamini, Y., and Liu, W. A step-down multiple hypotheses testing procedure that controls the false discovery rate under independence. Journal of Statistical Planning and Inference 82 (1999), 163–170.
 
-[12] Benjamini, Y., and Yekutieli, D. (2001). The control of the false discovery rate in multiple testing under dependency. Annals of Statistics, 29, 1165-1188.
+[13] Benjamini, Y., and Yekutieli, D. (2001). The control of the false discovery rate in multiple testing under dependency. Annals of Statistics, 29, 1165-1188.
 
-[13] M. Galassi et al, GNU Scientific Library Reference Manual (3rd Ed.), ISBN 0954612078.
+[14] M. Galassi et al, GNU Scientific Library Reference Manual (3rd Ed.), ISBN 0954612078.
 
 ### TO INSTALL AND BUILD
 
